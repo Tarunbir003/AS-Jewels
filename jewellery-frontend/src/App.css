@@ -1,0 +1,22 @@
+
+.auth-back{
+  background-image: url('../public/pexels-didsss-1302307.jpg');
+  background-size: cover;
+  height: 120vh;
+  display: flex;
+
+  
+}
+.content {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.container{
+  min-height: 800px;
+  width: 100%;
+}
