@@ -4,13 +4,13 @@ body {
     font-family: 'Cormorant', serif;
     margin: 0;
     padding: 0;
-    background-color: #F4D9B5; /* Light Beige for a softer luxury feel */
+    background-color: #F4D9B5; /* Light Beige for a luxury feel */
     color: #231919; /* Dark Brown for contrast */
 }
 
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(rgba(244, 217, 181, 0.8), rgba(244, 217, 181, 0.8)), url('/images/pexels-didsss-1302307.jpg');
+    background: linear-gradient(rgba(244, 217, 181, 0.8), rgba(244, 217, 181, 0.8)), url('/images/banner.jpg');
     background-size: cover;
     background-position: center;
     height: 100vh;
@@ -40,25 +40,26 @@ p {
 
 /* Button Styling */
 .btn-container {
-    margin-top: 40px; /* Moves the button lower */
+    margin-top: 30px;
+    text-align: center;
 }
 
 .btn {
     background-color: #770523; /* Burgundy */
     color: #F4D9B5; /* Light Beige */
-    padding: 14px 32px;
+    padding: 12px 24px;
     text-decoration: none;
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     border-radius: 8px;
-    transition: all 0.3s ease-in-out;
-    display: inline-block;
+    transition: 0.3s ease-in-out;
     font-weight: bold;
     border: 2px solid #231919;
+    display: inline-block;
 }
 
 .btn:hover {
-    background-color: #EDC483; /* Gold-Tan */
-    color: #231919; /* Dark Brown */
+    background-color: #231919;
+    color: #EDC483;
     transform: translateY(-3px);
 }
 
@@ -70,20 +71,144 @@ p {
     color: #231919; /* Dark Brown */
 }
 
-.collection-section h2 {
-    color: #770523; /* Burgundy for emphasis */
-    font-size: 2.5rem;
+.collection-description {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #770523;
 }
 
-.collection-section img {
-    max-width: 100%;
+/* Image Grid */
+.image-gallery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.image-row {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+/* Image Card */
+.image-card {
+    position: relative;
+    width: 48%;
+    text-align: center;
     border-radius: 12px;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    background: #f8e8c5;
+    padding: 10px;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.image-card img {
+    width: 100%;
+    border-radius: 12px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+/* Hover Effects */
+.image-card:hover {
+    transform: scale(1.05);
+}
+
+.image-card:hover img {
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Image Titles */
+.image-title {
+    margin-top: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #770523;
+    font-style: italic;
+}
+
+/* Blog Section */
+.blog-section {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #f4e1c1;
+}
+
+.blog-posts {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.blog-post {
+    width: 45%;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-in-out;
+}
+
+.blog-post:hover {
+    transform: translateY(-5px);
+}
+
+/* Testimonials Section */
+.testimonials {
+    text-align: center;
+    padding: 60px 20px;
+    background-color: #F4D9B5;
+}
+
+.testimonial-card {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Newsletter Section */
+.newsletter-section {
+    text-align: center;
+    padding: 50px 20px;
+    background-color: #EDC483;
+}
+
+.newsletter-form input {
+    width: 60%;
+    padding: 12px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    margin-right: 10px;
+}
+
+.newsletter-form button {
+    padding: 12px 24px;
+    background-color: #770523;
+    color: #F4D9B5;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: 0.3s ease-in-out;
+}
+
+.newsletter-form button:hover {
+    background-color: #231919;
 }
 
 /* Footer */
 .footer {
-    background-color: #770523; /* Burgundy */
-    color: #F4D9B5; /* Light Beige */
+    background-color: #770523;
+    color: #F4D9B5;
     text-align: center;
     padding: 20px;
     margin-top: 40px;
