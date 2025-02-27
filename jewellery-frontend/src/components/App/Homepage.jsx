@@ -8,7 +8,9 @@ const Homepage = () => {
       <header className="hero-section">
         <div className="hero-content">
           <h1>Timeless Beauty, Eternal Shine</h1>
-          <p>"Adorn yourself with the whispers of elegance, where every jewel tells a story of grace and luxury."</p>
+          <p className="italic">
+            "Adorn yourself with the whispers of elegance, where every jewel tells a story of grace and luxury."
+          </p>
           <div className="btn-container">
             <a href="#collection" className="btn">Discover Now</a>
           </div>
@@ -45,13 +47,19 @@ const Homepage = () => {
         </div>
       </section>
 
-      {/* Featured Section */}
+      {/* ✨ Fixed Elegance That Speaks Section */}
       <section className="featured-section">
-        <h2>Elegance That Speaks</h2>
-        <p>"Jewelry is the poetry of the heart, sculpted in gold and gems."</p>
-        <div className="feature-images">
-          <img src="/images/earring_gold.jpg" alt="Gold Earrings" />
-          <img src="/images/watch_luxury.jpg" alt="Luxury Watch" />
+        <div className="elegance-container">
+          <div className="elegance-text">
+            <h2 className="elegance-heading">Elegance That Speaks</h2>
+            <p className="elegance-quote">
+              "Jewelry is the poetry of the heart, sculpted in gold and gems."
+            </p>
+          </div>
+          <div className="elegance-images">
+            <img src="/images/earring_gold.jpg" alt="Gold Earrings" className="elegance-img" />
+            <img src="/images/watch_luxury.jpg" alt="Luxury Watch" className="elegance-img" />
+          </div>
         </div>
       </section>
 
@@ -95,16 +103,6 @@ const Homepage = () => {
           <p>"A touch of luxury that makes every moment special. Love my diamond necklace!"</p>
           <span>- James L.</span>
         </div>
-      </section>
-
-      {/* Newsletter Section */}
-      <section className="newsletter-section">
-        <h2>Stay Updated</h2>
-        <p>Subscribe to our newsletter for the latest collections and exclusive deals.</p>
-        <form className="newsletter-form">
-          <input type="email" placeholder="Enter your email" required />
-          <button type="submit" className="btn">Subscribe</button>
-        </form>
       </section>
 
       {/* Footer */}
