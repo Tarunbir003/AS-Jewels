@@ -4,13 +4,13 @@ body {
     font-family: 'Cormorant', serif;
     margin: 0;
     padding: 0;
-    background-color: #F4D9B5; /* Light Beige for a luxury feel */
-    color: #231919; /* Dark Brown for contrast */
+    background-color: #F4E3C3; /* Soft Beige */
+    color: #331919; /* Dark Brown for contrast */
 }
 
 /* Hero Section */
 .hero-section {
-    background: linear-gradient(rgba(244, 217, 181, 0.8), rgba(244, 217, 181, 0.8)), url('/images/banner.jpg');
+    background: linear-gradient(rgba(244, 217, 181, 0.85), rgba(244, 217, 181, 0.85)), url('/images/banner.jpg');
     background-size: cover;
     background-position: center;
     height: 100vh;
@@ -18,7 +18,7 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
-    color: #770523; /* Burgundy for contrast */
+    color: #770523; /* Deep Burgundy */
 }
 
 .hero-content {
@@ -33,7 +33,7 @@ h1 {
 
 p {
     font-size: 1.8rem;
-    color: #231919; /* Dark Brown */
+    color: #331919; /* Dark Brown */
     font-style: italic;
     margin-bottom: 40px;
 }
@@ -46,20 +46,20 @@ p {
 
 .btn {
     background-color: #770523; /* Burgundy */
-    color: #F4D9B5; /* Light Beige */
+    color: #F4E3C3; /* Light Beige */
     padding: 12px 24px;
     text-decoration: none;
     font-size: 1.2rem;
     border-radius: 8px;
     transition: 0.3s ease-in-out;
     font-weight: bold;
-    border: 2px solid #231919;
+    border: 2px solid #331919;
     display: inline-block;
 }
 
 .btn:hover {
-    background-color: #231919;
-    color: #EDC483;
+    background-color: #331919;
+    color: #E1B879;
     transform: translateY(-3px);
 }
 
@@ -67,8 +67,8 @@ p {
 .collection-section {
     text-align: center;
     padding: 60px 20px;
-    background-color: #EDC483; /* Soft Gold */
-    color: #231919; /* Dark Brown */
+    background-color: #E1B879; /* Softer Gold */
+    color: #331919; /* Dark Brown */
 }
 
 .collection-description {
@@ -101,7 +101,7 @@ p {
     border-radius: 12px;
     overflow: hidden;
     transition: transform 0.3s ease-in-out;
-    background: #f8e8c5;
+    background: #f9e8c8; /* Lighter Gold Background */
     padding: 10px;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.15);
 }
@@ -134,7 +134,7 @@ p {
 .blog-section {
     text-align: center;
     padding: 60px 20px;
-    background-color: #f4e1c1;
+    background-color: #F5D9AE; /* Warm Beige */
 }
 
 .blog-posts {
@@ -162,7 +162,7 @@ p {
 .testimonials {
     text-align: center;
     padding: 60px 20px;
-    background-color: #F4D9B5;
+    background-color: #F4E3C3; /* Soft Beige */
 }
 
 .testimonial-card {
@@ -174,42 +174,70 @@ p {
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Newsletter Section */
-.newsletter-section {
-    text-align: center;
-    padding: 50px 20px;
-    background-color: #EDC483;
-}
-
-.newsletter-form input {
-    width: 60%;
-    padding: 12px;
-    font-size: 1.1rem;
-    border: none;
-    border-radius: 8px;
-    margin-right: 10px;
-}
-
-.newsletter-form button {
-    padding: 12px 24px;
-    background-color: #770523;
-    color: #F4D9B5;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: 0.3s ease-in-out;
-}
-
-.newsletter-form button:hover {
-    background-color: #231919;
-}
-
 /* Footer */
 .footer {
     background-color: #770523;
-    color: #F4D9B5;
+    color: #F4E3C3;
     text-align: center;
     padding: 20px;
     margin-top: 40px;
+}
+
+/* Updated Elegance That Speaks Section */
+.elegance-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 50px 20px;
+    background: #F5D9AE; /* Light Gold */
+}
+
+.elegance-text {
+    max-width: 600px;
+    margin-bottom: 20px;
+}
+
+.elegance-heading {
+    font-size: 2rem;
+    color: #770523;
+    font-weight: bold;
+}
+
+.elegance-quote {
+    font-size: 1.5rem;
+    font-style: italic;
+    color: #331919;
+}
+
+.elegance-images {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.elegance-img {
+    width: 150px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive Adjustments */
+@media (min-width: 768px) {
+    .elegance-container {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+    }
+    
+    .elegance-text {
+        text-align: left;
+        max-width: 50%;
+    }
+
+    .elegance-images {
+        max-width: 50%;
+    }
 }
