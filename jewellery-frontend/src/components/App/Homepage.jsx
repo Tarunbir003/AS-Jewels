@@ -1,17 +1,45 @@
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom"; // Import Link for navigation
 import "./Homepage.css"; // Importing the CSS file for styling
 
 const Homepage = () => {
-  // Static product list using local images
-  const products = [
-    { id: 1, name: "Gold Bracelet", image: "/images/bracelet_gold.jpg", price: "$99.99" },
-    { id: 2, name: "Silver Bracelet", image: "/images/bracelet_silver.jpg", price: "$89.99" },
-    { id: 3, name: "Gold Necklace", image: "/images/necklace_gold.jpg", price: "$79.99" },
-    { id: 4, name: "Silver Necklace", image: "/images/necklace_silver.jpg", price: "$69.99" },
-    { id: 5, name: "Gold Earrings", image: "/images/earring_gold.jpg", price: "$59.99" },
-    { id: 6, name: "Silver Earrings", image: "/images/earring_silver.jpg", price: "$49.99" },
-    { id: 7, name: "Gold Ring", image: "/images/ring_gold.jpg", price: "$39.99" },
-    { id: 8, name: "Silver Ring", image: "/images/ring_silver.jpg", price: "$29.99" },
-  ];
+  const [products, setProducts] = useState([]);
+  const token = localStorage.getItem("accessToken");
+
+  // Function to shuffle the products array
+  const shuffleArray = (array) => {
+    return array.sort(() => Math.random() - 0.5);
+  };
+
+  // Fetch products dynamically from API
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get("http://127.0.0.1:8000/api/products/", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      // Ensure correct image URLs
+      const baseURL = "http://127.0.0.1:8000";
+      let productsWithImages = response.data.map((product) => ({
+        ...product,
+        image: product.image.startsWith("http") ? product.image : `${baseURL}${product.image}`,
+      }));
+
+      // Shuffle and limit to 8 products
+      productsWithImages = shuffleArray(productsWithImages).slice(0, 8);
+
+      setProducts(productsWithImages);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
 
   return (
     <div>
@@ -35,18 +63,25 @@ const Homepage = () => {
           Explore our carefully curated selection of exquisite jewelry, crafted with elegance and precision.
         </p>
 
+        {/* Product Gallery - Now Showing 8 Random Products */}
         <div className="image-gallery">
-          {products.map((product) => (
-            <div key={product.id} className="image-card">
-              <img 
-                src={product.image} 
-                alt={product.name} 
-                className="product-image"
-              />
-              <h3 className="image-title">{product.name}</h3>
-              <p className="product-price">{product.price}</p>
-            </div>
-          ))}
+          {products.length > 0 ? (
+            products.map((product) => (
+              <div key={product.id} className="image-card">
+                <Link to={`/product/${product.id}`}>
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="product-image cursor-pointer"
+                  />
+                </Link>
+                <h3 className="image-title">{product.name}</h3>
+                <p className="product-price">${product.price}</p>
+              </div>
+            ))
+          ) : (
+            <p className="text-center text-gray-500 col-span-full">Loading products...</p>
+          )}
         </div>
       </section>
 
@@ -64,7 +99,7 @@ const Homepage = () => {
 
       {/* Footer */}
       <footer className="footer">
-        <p>&copy; 2025 AS Jewels. All Rights Reserved.</p>
+        <p>&copy; {new Date().getFullYear()} AS Jewels. All Rights Reserved.</p>
       </footer>
     </div>
   );
