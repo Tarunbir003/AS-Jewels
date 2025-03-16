@@ -1,42 +1,43 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import Cart from "./Cart";
 import Toast from "./Toast";
 import "./ProductPage.css";
 
 export default function ProductPage() {
-  const { id } = useParams(); // Get product ID from URL
+  const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [selectedMetal, setSelectedMetal] = useState("silver");
+  const [selectedMetal, setSelectedMetal] = useState("gold");
   const [selectedSize, setSelectedSize] = useState("");
 
   const token = localStorage.getItem("accessToken");
 
-  // Fetch product details by ID
-  const fetchProductDetails = async () => {
-    try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/products/${id}/`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+  useEffect(() => {
+    const fetchProductDetails = async () => {
+      try {
+        const response = await axios.get(`http://127.0.0.1:8000/api/products/${id}/`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-      const baseURL = "http://127.0.0.1:8000";
-      const productWithFullImage = {
-        ...response.data,
-        image: response.data.image.startsWith("http")
-          ? response.data.image
-          : `${baseURL}${response.data.image}`,
-      };
+        const baseURL = "http://127.0.0.1:8000";
+        const productWithFullImage = {
+          ...response.data,
+          image: response.data.image.startsWith("http")
+            ? response.data.image
+            : `${baseURL}${response.data.image}`,
+        };
 
-      setProduct(productWithFullImage);
-    } catch (error) {
-      console.error("Error fetching product details:", error);
-    }
-  };
+        setProduct(productWithFullImage);
+      } catch (error) {
+        console.error("Error fetching product details:", error);
+      }
+    };
 
-  // Handle Add to Cart
+    fetchProductDetails();
+  }, [id]);
+
   const addToCart = async () => {
     try {
       const response = await axios.post(
@@ -59,42 +60,38 @@ export default function ProductPage() {
     }
   };
 
-  useEffect(() => {
-    fetchProductDetails();
-  }, [id]);
-
   if (!product) {
-    return <div>Loading...</div>;
+    return <div className="loading">Loading...</div>;
   }
 
   return (
-    <div className="container">
+    <div className="product-container">
       <div className="product-page">
         {/* Left: Product Image */}
-        <div className="product-image">
-          <img src={product.image} alt={product.name} className="main-image" />
+        <div className="product-image-container">
+          <img src={product.image} alt={product.name} className="product-image" />
         </div>
 
         {/* Right: Product Details */}
         <div className="product-details">
-          <h1>{product.name}</h1>
-          <p>{product.description}</p>
-          <p className="price">${product.price}</p>
+          <h1 className="product-title">{product.name}</h1>
+          <p className="product-description">{product.description}</p>
+          <p className="product-price">${product.price}</p>
 
           {/* Metal Selection */}
           <div className="metal-options">
-            <div
-              className={`metal-option silver ${
-                selectedMetal === "silver" ? "active" : ""
-              }`}
+            <button
+              className={`metal-btn ${selectedMetal === "silver" ? "active" : ""}`}
               onClick={() => setSelectedMetal("silver")}
-            ></div>
-            <div
-              className={`metal-option gold ${
-                selectedMetal === "gold" ? "active" : ""
-              }`}
+            >
+              Silver
+            </button>
+            <button
+              className={`metal-btn ${selectedMetal === "gold" ? "active" : ""}`}
               onClick={() => setSelectedMetal("gold")}
-            ></div>
+            >
+              Gold
+            </button>
           </div>
 
           {/* Size Selection */}
@@ -116,21 +113,32 @@ export default function ProductPage() {
 
           {/* Shipping Information */}
           <div className="shipping-info">
-            <p className="highlight">✔ Standard shipping in 5-7 business days</p>
-            <p className="highlight">✔ Express shipping in 2-4 business days</p>
+            <p>✔ Standard shipping in 5-7 business days</p>
+            <p>✔ Express shipping in 2-4 business days</p>
           </div>
 
           {/* Additional Benefits */}
-          <div className="benefits">
-            <ul>
-              <li>Free 30-day returns</li>
-              <li>Free shipping on orders $99+</li>
-              <li>Gift packaging available</li>
-              <li>Complimentary 1-year warranty</li>
-            </ul>
-          </div>
+          <ul className="benefits">
+            <li>Free 30-day returns</li>
+            <li>Free shipping on orders $99+</li>
+            <li>Gift packaging available</li>
+            <li>Complimentary 1-year warranty</li>
+          </ul>
         </div>
       </div>
+
+      {/* Footer Section */}
+      <footer className="footer">
+        <div className="footer-content">
+          <h2>AS Jewelers</h2>
+          <p>Elegance in Every Detail.</p>
+          <div className="social-icons">
+            <i className="fab fa-instagram"></i>
+            <i className="fab fa-twitter"></i>
+            <i className="fab fa-tiktok"></i>
+          </div>
+        </div>
+      </footer>
 
       {/* Toast Notification */}
       {showToast && <Toast message={toastMessage} onClose={() => setShowToast(false)} />}
