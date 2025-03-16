@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useParams, Link } from 'react-router-dom'; // Import useParams for URL params
-import Header from './Header';
 import Cart from './Cart';
 import Toast from './Toast';
 
@@ -49,10 +48,6 @@ export default function ProductPage() {
       if (response.status === 201) {
         setToastMessage('Product added to cart!');
         setShowToast(true);
-
-        setTimeout(() => {
-          setShowToast(false);
-        }, 3000);
       }
     } catch (error) {
       console.error('Error adding product to cart:', error);
@@ -64,38 +59,31 @@ export default function ProductPage() {
   }, [id]);
 
   if (!product) {
-    return <div>Loading...</div>; // Show loading while the product is being fetched
+    return <div>Loading...</div>;
   }
 
   return (
-    <div className="container">
-      <div className="product-page my-6">
-        <div className="flex flex-wrap gap-10">
-          <div className="product-image flex-shrink-0 w-1/2">
-            <img src={product.image} alt={product.name} className="w-full h-full object-cover rounded-lg" />
-          </div>
-
-          <div className="product-details w-1/2">
-            <h1 className="text-3xl font-semibold text-purple-500">{product.name}</h1>
-            <p className="text-lg text-gray-700 my-4">{product.description}</p>
-            <div className="flex items-center gap-4">
-              <span className="text-xl font-semibold text-purple-500">${product.price}</span>
-              <button
-                onClick={() => addToCart(product.id)}
-                className="bg-purple-600 hover:bg-pink-500 text-white text-sm font-medium px-6 py-2 rounded-lg"
-              >
-                Add to Cart
-              </button>
-            </div>
-          </div>
+    <div className="container mx-auto p-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="bg-white shadow-lg rounded-lg p-6">
+          <img src={product.image} alt={product.name} className="w-full h-full object-cover rounded-lg" />
         </div>
-
-        <div className="my-6">
-          <Link to="/shop" className="text-sm text-purple-500 underline">Back to Products</Link>
+        <div className="bg-white shadow-lg rounded-lg p-6">
+          <h1 className="text-3xl font-semibold text-purple-500">{product.name}</h1>
+          <p className="text-lg text-gray-700 my-4">
+            {product.description} <br />
+            ✨ 
+          </p>
+          <span className="text-xl font-semibold text-purple-500">${product.price}</span>
+          <button
+            className="mt-4 bg-purple-500 text-white px-6 py-2 rounded hover:bg-purple-600"
+            onClick={() => addToCart(product.id)}
+          >
+            Add to Cart
+          </button>
         </div>
       </div>
-      
-      <Toast show={showToast} message={toastMessage} />
+      {showToast && <Toast message={toastMessage} onClose={() => setShowToast(false)} />}
     </div>
   );
 }
