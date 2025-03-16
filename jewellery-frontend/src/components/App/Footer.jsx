@@ -2,71 +2,68 @@ import { FaFacebookF, FaInstagram, FaTwitter, FaTiktok, FaShoppingBag, FaPhone, 
 
 const Footer = () => {
   return (
-    <footer className="bg-[#f5d5ae] text-[#4b0f0f] py-10 px-6 md:px-12">
+    <footer className="bg-[#770523] text-[#F4E3C3] py-12 px-6 md:px-16">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between">
         
         {/* Left Section - Branding */}
         <div className="mb-6 md:mb-0">
-          <h2 className="text-2xl font-semibold text-[#4b0f0f]">AS Jewelers</h2>
-          <p className="italic text-[#8b0000] mt-2">Elegance in Every Detail.</p>
-          <div className="mt-4 flex space-x-4">
-            <a href="#" className="text-[#4b0f0f] hover:text-[#8b0000] transition"><FaFacebookF size={20} /></a>
-            <a href="#" className="text-[#4b0f0f] hover:text-[#8b0000] transition"><FaInstagram size={20} /></a>
-            <a href="#" className="text-[#4b0f0f] hover:text-[#8b0000] transition"><FaTwitter size={20} /></a>
-            <a href="#" className="text-[#4b0f0f] hover:text-[#8b0000] transition"><FaTiktok size={20} /></a>
+          <h2 className="text-3xl font-bold text-[#E1B879]">AS Jewelers</h2>
+          <p className="italic text-[#F4E3C3] mt-2">Elegance in Every Detail.</p>
+          <div className="mt-5 flex space-x-4">
+            <a href="#" className="text-[#F4E3C3] hover:text-[#E1B879] transition"><FaFacebookF size={22} /></a>
+            <a href="#" className="text-[#F4E3C3] hover:text-[#E1B879] transition"><FaInstagram size={22} /></a>
+            <a href="#" className="text-[#F4E3C3] hover:text-[#E1B879] transition"><FaTwitter size={22} /></a>
+            <a href="#" className="text-[#F4E3C3] hover:text-[#E1B879] transition"><FaTiktok size={22} /></a>
           </div>
         </div>
 
         {/* Center Section - Quick Links & Support */}
-        <div className="grid grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-8">
           <div>
-            <h3 className="text-lg font-medium mb-3 text-[#8b0000]">Quick Links</h3>
-            <ul className="space-y-2">
+            <h3 className="text-lg font-semibold mb-4 text-[#E1B879]">Quick Links</h3>
+            <ul className="space-y-3">
               <li className="flex items-center gap-2">
-                <FaShoppingBag className="text-[#8b0000]" />
-                <a href="/shop" className="hover:text-[#8b0000]">Shop</a>
+                <FaShoppingBag className="text-[#E1B879]" />
+                <a href="/shop" className="hover:text-[#E1B879] transition">Shop</a>
               </li>
               <li className="flex items-center gap-2">
-                <FaEnvelope className="text-[#8b0000]" />
-                <a href="/about" className="hover:text-[#8b0000]">About Us</a>
+                <FaEnvelope className="text-[#E1B879]" />
+                <a href="/about" className="hover:text-[#E1B879] transition">About Us</a>
               </li>
               <li className="flex items-center gap-2">
-                <FaPhone className="text-[#8b0000]" />
-                <a href="/contact" className="hover:text-[#8b0000]">Contact</a>
+                <FaPhone className="text-[#E1B879]" />
+                <a href="/contact" className="hover:text-[#E1B879] transition">Contact</a>
               </li>
             </ul>
           </div>
           <div>
-            <h3 className="text-lg font-medium mb-3 text-[#8b0000]">Customer Support</h3>
-            <ul className="space-y-2">
-              <li><a href="/shipping" className="hover:text-[#8b0000]">Shipping & Returns</a></li>
-              <li><a href="/privacy" className="hover:text-[#8b0000]">Privacy Policy</a></li>
-              <li><a href="/terms" className="hover:text-[#8b0000]">Terms & Conditions</a></li>
+            <h3 className="text-lg font-semibold mb-4 text-[#E1B879]">Customer Support</h3>
+            <ul className="space-y-3">
+              <li><a href="/shipping" className="hover:text-[#E1B879] transition">Shipping & Returns</a></li>
+              <li><a href="/privacy" className="hover:text-[#E1B879] transition">Privacy Policy</a></li>
+              <li><a href="/terms" className="hover:text-[#E1B879] transition">Terms & Conditions</a></li>
             </ul>
           </div>
         </div>
 
         {/* Right Section - Newsletter Signup */}
         <div>
-          <h3 className="text-lg font-medium mb-3 text-[#8b0000]">Subscribe to our Newsletter</h3>
-          <p className="text-[#4b0f0f] text-sm mb-4 italic">Get exclusive offers & latest updates.</p>
+          <h3 className="text-lg font-semibold mb-4 text-[#E1B879]">Subscribe to Our Newsletter</h3>
+          <p className="text-[#F4E3C3] text-sm mb-5 italic">Get exclusive offers & the latest updates.</p>
           <div className="flex">
             <input 
               type="email" 
               placeholder="Enter your email" 
-              className="px-4 py-2 bg-[#f5d5ae] border border-[#8b0000] text-[#4b0f0f] rounded-l focus:outline-none placeholder-[#8b0000]"
+              className="px-4 py-3 bg-[#F4E3C3] border border-[#E1B879] text-[#770523] rounded-l focus:outline-none placeholder-[#770523] w-64"
             />
-            <button className="bg-[#8b0000] px-4 py-2 text-white rounded-r hover:bg-[#4b0f0f] transition">
+            <button className="bg-[#E1B879] px-5 py-3 text-[#770523] font-semibold rounded-r hover:bg-[#F4E3C3] transition">
               Subscribe
             </button>
           </div>
         </div>
       </div>
 
-      {/* Bottom Section */}
-      <div className="mt-8 border-t border-[#8b0000] pt-4 text-center text-sm text-[#4b0f0f]">
-        <p>© {new Date().getFullYear()} AS Jewelers. All Rights Reserved.</p>
-      </div>
+    
     </footer>
   );
 };
