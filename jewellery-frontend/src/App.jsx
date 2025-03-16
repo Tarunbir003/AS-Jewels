@@ -1,13 +1,12 @@
-import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import "./App.css";
 import Login from "./components/Auth/Login";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Register from "./components/Auth/Register";
 import Products from "./components/App/Products";
 import Cart from "./components/App/Cart";
-import Home from "./components/App/Home";
+import Homepage from "./components/App/Homepage";
 import Footer from "./components/App/Footer";
-import Header from "./components/App/Header"; // Import your Header component
+import Header from "./components/App/Header";
 import AboutJewelryMaster from "./components/App/About";
 import AdminRegister from "./components/Auth/AdminReg";
 import UserProfile from "./components/App/Profile";
@@ -15,60 +14,68 @@ import CheckoutForm from "./components/App/CheckoutForm";
 import ThankYou from "./components/App/ThankYou";
 import JewelryCustomization from "./components/App/JewelleryCustomization";
 import Admin from "./components/Admin/Admin";
-import ProtectedRoute from "./components/ProtectedRoute"; // Import the ProtectedRoute component
+import ProtectedRoute from "./components/ProtectedRoute";
 import ChatBot from "./components/Chatbot/ChatBot";
 import MetalPrices from "./components/App/MetalInvestPage";
 import ProductPage from "./components/App/ProductPage";
-import React from "react";
-import Homepage from "./components/App/Homepage"; // New homepage component
+import PaymentSuccess from "./components/App/PaymentSuccess";
+import PaymentCancel from "./components/App/PaymentCancel";
 
-function App() {
-  const location = useLocation(); // Get the current location
+function AppLayout() {
+  const location = useLocation();
+
+  // Hide Header, Footer, and ChatBot on specific routes
+  const hideHeaderFooter = ["/login", "/register", "/adminreg"].includes(location.pathname);
 
   return (
     <>
-      {/* Render Header only if the path is not /login or /register or /adminreg */}
-      {location.pathname !== "/login" &&
-        location.pathname !== "/register" &&
-        location.pathname !== "/adminreg" && <Header />}
+      {/* Render Header only if not on login/register/adminreg pages */}
+      {!hideHeaderFooter && <Header />}
 
       <div>
-        {/* Render ChatBot only if the path is not /login or /register or /adminreg */}
-        {location.pathname !== "/login" &&
-          location.pathname !== "/register" &&
-          location.pathname !== "/adminreg" && <ChatBot />}
+        {/* Render ChatBot only if not on login/register/adminreg pages */}
+        {!hideHeaderFooter && <ChatBot />}
 
         <Routes>
+          {/* Authentication Routes */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/adminreg" element={<AdminRegister />} />
-          <Route path="/" element={<Homepage />} /> {/* Set Homepage as default */}
+
+          {/* Main Pages */}
+          <Route path="/" element={<Homepage />} />
           <Route path="/shop" element={<Products />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/about" element={<AboutJewelryMaster />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/checkout" element={<CheckoutForm />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/payment-cancel" element={<PaymentCancel />} />
           <Route path="/thank-you" element={<ThankYou />} />
           <Route path="/jewellery-customization" element={<JewelryCustomization />} />
-          <Route path="/admin" element={<ProtectedRoute element={<Admin />} />} />
           <Route path="/metal-prices" element={<MetalPrices />} />
+
+          {/* Product Details Route */}
           <Route path="/product/:id" element={<ProductPage />} />
+
+          {/* Admin Route (Protected) */}
+          <Route path="/admin" element={<ProtectedRoute element={<Admin />} />} />
         </Routes>
       </div>
 
-      {/* Render Footer only if the path is not /login or /register or /adminreg */}
-      {location.pathname !== "/login" &&
-        location.pathname !== "/register" &&
-        location.pathname !== "/adminreg" && <Footer />}
+      {/* Render Footer only if not on login/register/adminreg pages */}
+      {!hideHeaderFooter && <Footer />}
     </>
   );
 }
 
-// Wrap App with Router to provide routing context
-const WrappedApp = () => (
-  <Router>
-    <App />
-  </Router>
-);
+// Wrap AppLayout with Router to provide routing context
+function App() {
+  return (
+    <Router>
+      <AppLayout />
+    </Router>
+  );
+}
 
-export default WrappedApp;
+export default App;
