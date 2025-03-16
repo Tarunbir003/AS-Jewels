@@ -1,47 +1,90 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import Header from "./Header";
 import Cart from "./Cart";
 import Toast from "./Toast";
-import "./ProductPage.css";
+import Select from "react-select";
+import "./Products.css"; // Import updated styles
 
-export default function ProductPage() {
-  const { id } = useParams(); // Get product ID from URL
-  const [product, setProduct] = useState(null);
+export default function Products() {
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [subcategories, setSubcategories] = useState([]);
+  const [tags, setTags] = useState([]);
+
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedSubcategory, setSelectedSubcategory] = useState("");
+  const [selectedTags, setSelectedTags] = useState([]);
+
   const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState("");
-  const [selectedMetal, setSelectedMetal] = useState("silver");
-  const [selectedSize, setSelectedSize] = useState("");
-
+  const [cartOpen, setCartOpen] = useState(false);
+  const [refreshCart, setRefreshCart] = useState(false);
   const token = localStorage.getItem("accessToken");
 
-  // Fetch product details by ID
-  const fetchProductDetails = async () => {
+  // Fetch products
+  const fetchProducts = async () => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/products/${id}/`, {
-        headers: { Authorization: `Bearer ${token}` },
+      let url = "http://127.0.0.1:8000/api/products/";
+      const queryParams = new URLSearchParams();
+
+      if (selectedCategory) queryParams.append("category", selectedCategory);
+      if (selectedSubcategory) queryParams.append("subcategory", selectedSubcategory);
+      selectedTags.forEach((tag) => queryParams.append("tags", tag));
+
+      if (queryParams.toString()) {
+        url = `http://127.0.0.1:8000/products/filter/?${queryParams.toString()}`;
+      }
+
+      const response = await axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
 
       const baseURL = "http://127.0.0.1:8000";
-      const productWithFullImage = {
-        ...response.data,
-        image: response.data.image.startsWith("http")
-          ? response.data.image
-          : `${baseURL}${response.data.image}`,
-      };
+      const productsWithFullImages = response.data.map((product) => ({
+        ...product,
+        image: product.image.startsWith("http") ? product.image : `${baseURL}${product.image}`,
+      }));
 
-      setProduct(productWithFullImage);
+      setProducts(productsWithFullImages);
     } catch (error) {
-      console.error("Error fetching product details:", error);
+      console.error("Error fetching products:", error);
     }
   };
 
-  // Handle Add to Cart
-  const addToCart = async () => {
+  // Fetch Filters
+  const fetchFilters = async () => {
+    try {
+      const categoryResponse = await axios.get("http://127.0.0.1:8000/api/categories/");
+      const subcategoryResponse = await axios.get("http://127.0.0.1:8000/api/subcategories/");
+      const tagsResponse = await axios.get("http://127.0.0.1:8000/api/tags/");
+
+      setCategories(categoryResponse.data);
+      setSubcategories(subcategoryResponse.data);
+      setTags(tagsResponse.data);
+    } catch (error) {
+      console.error("Error fetching filters:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchFilters();
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    fetchProducts();
+  }, [selectedCategory, selectedSubcategory, selectedTags]);
+
+  // Add to Cart Function
+  const addToCart = async (productId) => {
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/cart/",
-        { product_id: product.id, quantity: 1 },
+        { product_id: productId, quantity: 1 },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -49,91 +92,83 @@ export default function ProductPage() {
           },
         }
       );
-
       if (response.status === 201) {
+        setCartOpen(true);
+        setRefreshCart(true);
         setToastMessage("Product added to cart!");
         setShowToast(true);
+
+        setTimeout(() => {
+          setShowToast(false);
+          setRefreshCart(false);
+        }, 3000);
       }
     } catch (error) {
       console.error("Error adding product to cart:", error);
     }
   };
 
-  useEffect(() => {
-    fetchProductDetails();
-  }, [id]);
-
-  if (!product) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <div className="container">
-      <div className="product-page">
-        {/* Left: Product Image */}
-        <div className="product-image">
-          <img src={product.image} alt={product.name} className="main-image" />
-        </div>
+      {/* Filter Section */}
+      <div className="filter-bar">
+        <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+          <option value="">All Categories</option>
+          {categories.map((category) => (
+            <option key={category.id} value={category.id}>
+              {category.name}
+            </option>
+          ))}
+        </select>
 
-        {/* Right: Product Details */}
-        <div className="product-details">
-          <h1>{product.name}</h1>
-          <p>{product.description}</p>
-          <p className="price">${product.price}</p>
+        <select value={selectedSubcategory} onChange={(e) => setSelectedSubcategory(e.target.value)}>
+          <option value="">All Subcategories</option>
+          {subcategories.map((subcategory) => (
+            <option key={subcategory.id} value={subcategory.id}>
+              {subcategory.name}
+            </option>
+          ))}
+        </select>
 
-          {/* Metal Selection */}
-          <div className="metal-options">
-            <div
-              className={`metal-option silver ${
-                selectedMetal === "silver" ? "active" : ""
-              }`}
-              onClick={() => setSelectedMetal("silver")}
-            ></div>
-            <div
-              className={`metal-option gold ${
-                selectedMetal === "gold" ? "active" : ""
-              }`}
-              onClick={() => setSelectedMetal("gold")}
-            ></div>
-          </div>
-
-          {/* Size Selection */}
-          <select
-            className="select-size"
-            value={selectedSize}
-            onChange={(e) => setSelectedSize(e.target.value)}
-          >
-            <option value="">Select Size</option>
-            <option value="small">Small</option>
-            <option value="medium">Medium</option>
-            <option value="large">Large</option>
-          </select>
-
-          {/* Add to Cart Button */}
-          <button className="add-to-cart-btn" onClick={addToCart}>
-            ADD TO BAG
-          </button>
-
-          {/* Shipping Information */}
-          <div className="shipping-info">
-            <p className="highlight">✔ Standard shipping in 5-7 business days</p>
-            <p className="highlight">✔ Express shipping in 2-4 business days</p>
-          </div>
-
-          {/* Additional Benefits */}
-          <div className="benefits">
-            <ul>
-              <li>Free 30-day returns</li>
-              <li>Free shipping on orders $99+</li>
-              <li>Gift packaging available</li>
-              <li>Complimentary 1-year warranty</li>
-            </ul>
-          </div>
-        </div>
+        <Select
+          isMulti
+          options={tags.map((tag) => ({
+            value: tag.id,
+            label: tag.name,
+          }))}
+          value={tags.filter((tag) => selectedTags.includes(tag.id)).map((tag) => ({
+            value: tag.id,
+            label: tag.name,
+          }))}
+          onChange={(selectedOptions) => {
+            setSelectedTags(selectedOptions ? selectedOptions.map((option) => option.value) : []);
+          }}
+          className="w-full max-w-md"
+          placeholder="Select Tags"
+          closeMenuOnSelect={false}
+        />
       </div>
 
-      {/* Toast Notification */}
-      {showToast && <Toast message={toastMessage} onClose={() => setShowToast(false)} />}
+      {/* Product Grid */}
+      <div className="product-grid">
+        {products.map((product) => (
+          <div className="product-card" key={product.id}>
+            <img className="product-image" src={product.image} alt={product.name} />
+            <div className="product-info">
+              <h3>{product.name}</h3>
+              <p>{product.description}</p>
+              <p className="price">${product.price}</p>
+              <div className="button-group">
+                <button className="add-to-cart-btn" onClick={() => addToCart(product.id)}>Add to Cart</button>
+                <Link to={`/product/${product.id}`} className="view-details-btn">View Details</Link>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <Toast show={showToast} message={toastMessage} />
+      <Cart open={cartOpen} setOpen={setCartOpen} refreshCart={refreshCart} />
     </div>
   );
 }
