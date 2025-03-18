@@ -15,8 +15,6 @@ from datetime import timedelta
 import os
 from dotenv import load_dotenv
 load_dotenv()
-import os
-import dj_database_url
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -67,7 +65,7 @@ MIDDLEWARE = [
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
-    'http://localhost:5173',# Your React frontend
+    'http://localhost:5173',# React frontend
 ]
 
 
@@ -96,10 +94,10 @@ WSGI_APPLICATION = 'jewellery_shop.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default="postgresql://jewellerydb_user:AemRghQwvMBUFNto2fKe6QONBbkWb9cX@dpg-cvcrbaofnakc739aa700-a.oregon-postgres.render.com/jewellerydb",  
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
 }
 
 
