@@ -49,7 +49,7 @@ const Header = () => {
           <div className="flex items-center">
             <a href="/" className="text-2xl font-bold text-gray-900 flex items-center">
               <span className="sr-only">Your Logo</span>
-              <img className="h-10 w-auto mr-2 scale-150" src="/logo.png" alt="Logo" />
+              <img className="h-8 w-auto mr-2 scale-150" src="/logo.png" alt="Logo" />
               <h3 className="text-2xl font-mono"><t>AS Jewellers</t></h3>
             </a>
           </div>
