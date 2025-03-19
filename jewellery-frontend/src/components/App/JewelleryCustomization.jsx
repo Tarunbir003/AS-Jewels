@@ -69,7 +69,7 @@ const JewelryCustomizationForm = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/jewelry_options/', {
+        const response = await axios.get('https://as-jewels-1.onrender.com/api/jewelry_options/', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -113,7 +113,7 @@ const JewelryCustomizationForm = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/jewelry_customization/', formData, {
+      const response = await axios.post('https://as-jewels-1.onrender.com/api/jewelry_customization/', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'application/json',

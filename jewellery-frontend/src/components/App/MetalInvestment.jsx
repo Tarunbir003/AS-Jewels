@@ -11,7 +11,7 @@ function MetalInvestment() {
     const fetchData = async () => {
       try {
         const response = await axios.get(
-          "http://127.0.0.1:8000/metal/get-metal-investment-recommendation/"
+          "https://as-jewels-1.onrender.com/metal/get-metal-investment-recommendation/"
         );
         setData(response.data);
       } catch (err) {

@@ -23,7 +23,7 @@ const CheckoutForm = () => {
   useEffect(() => {
     const fetchAddresses = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/addresses/', {
+        const response = await axios.get('https://as-jewels-1.onrender.com/api/addresses/', {
           headers: { Authorization: `Bearer ${token}` },
         });
         setAddresses(response.data);
@@ -50,7 +50,7 @@ const CheckoutForm = () => {
 
     try {
       const response = await axios.delete(
-        `http://127.0.0.1:8000/api/cart/${productId}/`,
+        `https://as-jewels-1.onrender.com/api/cart/${productId}/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -102,7 +102,7 @@ const CheckoutForm = () => {
       };
   
       try {
-        const response = await axios.post('http://127.0.0.1:8000/api/orders/', orderData, {
+        const response = await axios.post('https://as-jewels-1.onrender.com/api/orders/', orderData, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

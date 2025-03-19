@@ -18,7 +18,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ChatBot from "./components/Chatbot/ChatBot";
 import MetalPrices from "./components/App/MetalInvestPage";
 import ProductPage from "./components/App/ProductPage";
-import PaymentSuccess from "./components/App/PaymentSuccess";
+// import PaymentSuccess from "./components/App/PaymentSuccess";
 import PaymentCancel from "./components/App/PaymentCancel";
 
 function AppLayout() {
@@ -49,7 +49,7 @@ function AppLayout() {
           <Route path="/about" element={<AboutJewelryMaster />} />
           <Route path="/profile" element={<UserProfile />} />
           <Route path="/checkout" element={<CheckoutForm />} />
-          <Route path="/payment-success" element={<PaymentSuccess />} />
+          {/* <Route path="/payment-success" element={<PaymentSuccess />} /> */}
           <Route path="/payment-cancel" element={<PaymentCancel />} />
           <Route path="/thank-you" element={<ThankYou />} />
           <Route path="/jewellery-customization" element={<JewelryCustomization />} />

@@ -33,7 +33,7 @@ const AdminRegister = () => {
     setLoading(true);
     setError(""); // Clear previous errors
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/register-superuser/", {
+      const response = await axios.post("https://as-jewels-1.onrender.com/api/register-superuser/", {
         username: formData.username,
         email: formData.email,
         password: formData.password,

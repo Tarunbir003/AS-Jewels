@@ -10,7 +10,7 @@ const OrderList = () => {
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/allorders/", {
+        const response = await axios.get("https://as-jewels-1.onrender.com/allorders/", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setOrders(response.data);

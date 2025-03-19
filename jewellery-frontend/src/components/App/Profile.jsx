@@ -17,7 +17,7 @@ const UserProfile = () => {
     // Fetch user info when component mounts
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/profile/', {
+        const response = await axios.get('https://as-jewels-1.onrender.com/api/profile/', {
           headers: {
             Authorization: `Bearer ${localStorage.getItem('accessToken')}`, // Assuming you are storing token in local storage
           }
@@ -54,7 +54,7 @@ const UserProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.put('http://127.0.0.1:8000/api/profile/', formData, {
+      await axios.put('https://as-jewels-1.onrender.com/api/profile/', formData, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         }

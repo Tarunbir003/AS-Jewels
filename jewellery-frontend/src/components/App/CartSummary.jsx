@@ -12,7 +12,7 @@ const CartSummary = ({ couponCode, setCouponCode, discount, setDiscount, subtota
       setLoading(true);
       setError(null); // Reset error state
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/cart/', {
+        const response = await axios.get('https://as-jewels-1.onrender.com/api/cart/', {
           headers: { Authorization: `Bearer ${token}` },
         });
         
@@ -70,7 +70,7 @@ const CartSummary = ({ couponCode, setCouponCode, discount, setDiscount, subtota
               {cartItems.map((item) => (
                 <li key={item.product.id} className="mb-2 flex items-center">
                   <img
-                    src={`http://127.0.0.1:8000${item.product.image}`}
+                    src={`https://as-jewels-1.onrender.com/${item.product.image}`}
                     alt={item.product.name}
                     className="w-16 h-16 object-cover rounded-md mr-2"
                   />

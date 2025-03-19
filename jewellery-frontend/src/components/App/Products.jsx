@@ -26,7 +26,7 @@ export default function Products() {
   // Fetch products
   const fetchProducts = async () => {
     try {
-      let url = "http://127.0.0.1:8000/api/products/";
+      let url = "https://as-jewels-1.onrender.com/api/products/";
       const queryParams = new URLSearchParams();
 
       if (selectedCategory) queryParams.append("category", selectedCategory);
@@ -34,7 +34,7 @@ export default function Products() {
       selectedTags.forEach((tag) => queryParams.append("tags", tag));
 
       if (queryParams.toString()) {
-        url = `http://127.0.0.1:8000/products/filter/?${queryParams.toString()}`;
+        url = `https://as-jewels-1.onrender.com/products/filter/?${queryParams.toString()}`;
       }
 
       const response = await axios.get(url, {
@@ -43,7 +43,7 @@ export default function Products() {
         },
       });
 
-      const baseURL = "http://127.0.0.1:8000";
+      const baseURL = "https://as-jewels-1.onrender.com";
       const productsWithFullImages = response.data.map((product) => ({
         ...product,
         image: product.image.startsWith("http") ? product.image : `${baseURL}${product.image}`,
@@ -58,9 +58,9 @@ export default function Products() {
   // Fetch Filters
   const fetchFilters = async () => {
     try {
-      const categoryResponse = await axios.get("http://127.0.0.1:8000/api/categories/");
-      const subcategoryResponse = await axios.get("http://127.0.0.1:8000/api/subcategories/");
-      const tagsResponse = await axios.get("http://127.0.0.1:8000/api/tags/");
+      const categoryResponse = await axios.get("https://as-jewels-1.onrender.com/api/categories/");
+      const subcategoryResponse = await axios.get("https://as-jewels-1.onrender.com/api/subcategories/");
+      const tagsResponse = await axios.get("https://as-jewels-1.onrender.com/api/tags/");
 
       setCategories(categoryResponse.data);
       setSubcategories(subcategoryResponse.data);
@@ -83,7 +83,7 @@ export default function Products() {
   const addToCart = async (productId) => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/cart/",
+        "https://as-jewels-1.onrender.com/api/cart/",
         { product_id: productId, quantity: 1 },
         {
           headers: {

@@ -15,14 +15,14 @@ const Homepage = () => {
   // Fetch products dynamically from API
   const fetchProducts = async () => {
     try {
-      const response = await axios.get("http://127.0.0.1:8000/api/products/", {
+      const response = await axios.get("https://as-jewels-1.onrender.com/api/products/", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
 
       // Ensure correct image URLs
-      const baseURL = "http://127.0.0.1:8000";
+      const baseURL = "https://as-jewels-1.onrender.com/";
       let productsWithImages = response.data.map((product) => ({
         ...product,
         image: product.image.startsWith("http") ? product.image : `${baseURL}${product.image}`,

@@ -23,7 +23,7 @@ const AddProduct = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/categories/');
+        const response = await axios.get('https://as-jewels-1.onrender.com/api/categories/');
         setCategories(response.data);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -32,7 +32,7 @@ const AddProduct = () => {
 
     const fetchSubcategories = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/subcategories/');
+        const response = await axios.get('https://as-jewels-1.onrender.com/api/subcategories/');
         setSubcategories(response.data);
       } catch (error) {
         console.error('Error fetching subcategories:', error);
@@ -41,7 +41,7 @@ const AddProduct = () => {
 
     const fetchTags = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/tags/');
+        const response = await axios.get('https://as-jewels-1.onrender.com/api/tags/');
         setTags(response.data);
       } catch (error) {
         console.error('Error fetching tags:', error);
@@ -71,7 +71,7 @@ const AddProduct = () => {
     selectedTags.forEach((tag) => formData.append('tags', tag));
 
     try {
-      const response = await axios.post('http://127.0.0.1:8000/api/products/', formData, {
+      const response = await axios.post('https://as-jewels-1.onrender.com/api/products/', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',

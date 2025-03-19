@@ -12,7 +12,7 @@ const JewelryCustomizationRequests = () => {
   useEffect(() => {
     const fetchCustomizationRequests = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/jewelry_customization/', {
+        const response = await axios.get('https://as-jewels-1.onrender.com/api/jewelry_customization/', {
           headers: {
             Authorization: `Bearer ${token}`, // Include the token in the Authorization header
           },

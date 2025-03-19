@@ -17,7 +17,7 @@ export default function Cart({ open, setOpen , refreshCart}) {
       setLoading(true);
       setError(null); // Reset error state
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/cart/', {
+        const response = await axios.get('https://as-jewels-1.onrender.com/api/cart/', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -42,7 +42,7 @@ export default function Cart({ open, setOpen , refreshCart}) {
 
     try {
       const response = await axios.delete(
-        `http://127.0.0.1:8000/api/cart/${productId}/`,
+        `https://as-jewels-1.onrender.com/api/cart/${productId}/`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -73,7 +73,7 @@ export default function Cart({ open, setOpen , refreshCart}) {
 
     try {
       const response = await axios.put(
-        `http://127.0.0.1:8000/api/cart/${productId}/`,
+        `https://as-jewels-1.onrender.com/api/cart/${productId}/`,
         { quantity },
         {
           headers: {
@@ -139,7 +139,7 @@ export default function Cart({ open, setOpen , refreshCart}) {
                             <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                               <img
                                 alt={item.product.name}
-                                src={`http://127.0.0.1:8000${item.product.image}`}
+                                src={`https://as-jewels-1.onrender.com/${item.product.image}`}
                                 className="h-full w-full object-cover object-center"
                               />
                             </div>

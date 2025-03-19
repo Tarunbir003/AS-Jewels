@@ -17,7 +17,7 @@ export default function ProductPage() {
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const response = await axios.get(`http://127.0.0.1:8000/api/products/${id}/`, {
+        const response = await axios.get(`https://as-jewels-1.onrender.com/api/products/${id}/`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -41,7 +41,7 @@ export default function ProductPage() {
   const addToCart = async () => {
     try {
       const response = await axios.post(
-        "http://127.0.0.1:8000/api/cart/",
+        "https://as-jewels-1.onrender.com/api/cart/",
         { product_id: product.id, quantity: 1 },
         {
           headers: {

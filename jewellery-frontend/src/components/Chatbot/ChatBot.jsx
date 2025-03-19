@@ -29,7 +29,7 @@ function Chatbot() {
         if (!userInput.trim()) return;  // Don't send empty input
         
         try {
-            const response = await axios.get("http://127.0.0.1:8000/api/get_suggestions/", {
+            const response = await axios.get("https://as-jewels-1.onrender.com/api/get_suggestions/", {
                 params: { preference: userInput },
             });
             const botResponse = response.data.suggestions;

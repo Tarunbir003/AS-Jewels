@@ -12,7 +12,7 @@ const ThankYou = () => {
   // Fetch product details by ID
   const fetchProductById = async (productId) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/products/${productId}/`, {
+      const response = await axios.get(`https://as-jewels-1.onrender.com/api/products/${productId}/`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
