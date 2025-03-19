@@ -50,7 +50,7 @@ const Header = () => {
             <a href="/" className="text-2xl font-bold text-gray-900 flex items-center">
               <span className="sr-only">Your Logo</span>
               <img className="h-10 w-auto mr-2 scale-150" src="/logo.png" alt="Logo" />
-              <h3 className="text-2xl font-mono">The Jewel Masters</h3>
+              <h3 className="text-2xl font-mono">AS Jewellers</h3>
             </a>
           </div>
 
