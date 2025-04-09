@@ -157,7 +157,7 @@ export default function Products() {
             <div className="product-info">
               <h3>{product.name}</h3>
               <p>{product.description}</p>
-              <p className="price">₹{product.price}</p>
+              <p className="price">${product.price}</p>
               <div className="button-group">
                 <button className="button add-to-cart-btn" onClick={() => addToCart(product.id)}>Add to Cart</button>
                 <Link to={`/product/${product.id}`} className="button view-details-btn">View Details</Link>
