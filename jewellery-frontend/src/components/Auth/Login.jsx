@@ -42,11 +42,11 @@ const Login = () => {
       <App_info />
       <div className="flex min-h-screen items-center bg-white min-w-8 max-w-96 flex-1 flex-col justify-center px-6 py-12 lg:px-8 scale-99">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img
-            alt="Your Company"
-            src='../../../public/image-removebg-preview (2).png'
-            className="mx-auto h-40 w-auto"
-          />
+          <a href="/" className="text-2xl font-bold text-gray-900 flex items-center">
+              <span className="sr-only">Your Logo</span>
+              <img className="h-10 w-auto mr-2 scale-150" src="/logo.png" alt="Logo" />
+              <h3 className="text-xl font-mono"></h3> 
+            </a>
           <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
             Sign in to your account
           </h2>
