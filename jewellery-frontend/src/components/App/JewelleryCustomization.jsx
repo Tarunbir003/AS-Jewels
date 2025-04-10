@@ -8,7 +8,7 @@ const JewelryCustomizationForm = () => {
     size: "",
     engraving_text: "",
     price: "",
-    contact_info: "", // new field
+    contact_info: "",
   });
 
   const [error, setError] = useState("");
@@ -51,7 +51,7 @@ const JewelryCustomizationForm = () => {
       <h2 className="text-3xl font-bold text-center mb-4">Customize Your Jewelry</h2>
       {error && <p className="text-red-500 text-center mb-2">{error}</p>}
       {success && <p className="text-green-500 text-center mb-2">{success}</p>}
-      
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block font-medium">Jewelry Type</label>
@@ -60,7 +60,6 @@ const JewelryCustomizationForm = () => {
             <option value="Ring">Ring</option>
             <option value="Necklace">Necklace</option>
             <option value="Bracelet">Bracelet</option>
-            {/* Add more types as needed */}
           </select>
         </div>
 
