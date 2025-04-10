@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { useNavigate } from 'react-router-dom';
 import AddAddressForm from './Addresses';
 import CartSummary from './CartSummary';
 
@@ -16,9 +16,8 @@ const CheckoutForm = () => {
   const [error, setError] = useState('');
   const [showAddAddress, setShowAddAddress] = useState(false);
   const [orderItems, setOrderItems] = useState([]);
-  const [paymentMethod, setPaymentMethod] = useState('PAYPAL'); // Default to PayPal
   const token = localStorage.getItem('accessToken');
-  const navigate = useNavigate(); // Use navigate for redirection
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchAddresses = async () => {
@@ -35,110 +34,95 @@ const CheckoutForm = () => {
 
     fetchAddresses();
   }, [token]);
-  
+
   const calculateTotalCost = () => {
-    const validSubTotal = typeof subTotal === 'number' ? subTotal : 0; // Fallback to 0 if subTotal is invalid
+    const validSubTotal = typeof subTotal === 'number' ? subTotal : 0;
     const discountedPrice = validSubTotal - (validSubTotal * (discount / 100));
-    console.log("Discounted Price:", discountedPrice);
-    return Math.max(discountedPrice, 0); // Ensure total doesn't go below 0
+    return Math.max(discountedPrice, 0);
   };
-  
 
-  const removeItem = async (productId) => {
-    // Optimistically update the UI
-    setOrderItems((prevItems) => prevItems.filter((item) => item.product !== productId));
-
+  const handleRazorpayPayment = async () => {
     try {
-      const response = await axios.delete(
-        `https://as-jewels-1.onrender.com/api/cart/${productId}/`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      if (response.status !== 204) {
-        throw new Error('Failed to remove item');
-      }
-      console.log(`Product ${productId} removed from cart`);
+      // Step 1: Create an order directly on the client side
+      const orderData = {
+        amount: calculateTotalCost() * 100, // Amount in paise
+        currency: 'INR',
+        receipt: `receipt_${Math.random().toString(36).substring(7)}`, // Random receipt ID
+      };
+
+      const options = {
+        key: 'rzp_test_6IDr1AeGNZgUbK', // Replace with your Razorpay test key
+        amount: orderData.amount,
+        currency: orderData.currency,
+        name: 'AS Jewels',
+        description: 'Order Payment',
+        handler: async function (response) {
+          console.log('Payment Successful:', response);
+          alert('Payment Successful!');
+          await placeOrder(response.razorpay_payment_id); // Pass payment ID to place the order
+        },
+        prefill: {
+          name: name,
+          contact: phone,
+        },
+        theme: {
+          color: '#3399cc',
+        },
+      };
+
+      const razorpay = new window.Razorpay(options);
+      razorpay.open();
     } catch (error) {
-      console.error('Error removing product from cart:', error);
-      // Revert optimistic update in case of error
-      setOrderItems((prevItems) => [...prevItems, { product: productId }]);
-      setError("Failed to remove item. Please try again.");
+      console.error('Error during payment:', error);
+      setError('Failed to initiate payment. Please try again.');
     }
   };
 
-  const emptyCart = async () => {
-    for (const item of orderItems) {
-      await removeItem(item.product); 
-    }
-  };
-
-  const placeOrder = async (e) => {
-    e.preventDefault();
-  
-    // Check for required fields
+  const placeOrder = async (paymentId) => {
     if (!name || !phone || !selectedBillingAddress || !selectedShippingAddress) {
       setError('Please fill in all required fields.');
       return;
     }
-  
-    // Calculate the total cost and store in a local variable
-    const calculatedTotalCost = calculateTotalCost(); // Get the discounted price
-  
-    // Use setTimeout to delay the order placement
-    setTimeout(async () => {
-      const orderData = {
-        total_price: calculatedTotalCost, // Use the calculated total cost directly
-        name,
-        phone_number: phone,
-        shipping_address: selectedShippingAddress,
-        billing_address: selectedBillingAddress,
-        coupon_applied: couponCode,
-        order_items: orderItems,
-        payment_method: paymentMethod,
-      };
-  
-      try {
-        const response = await axios.post('https://as-jewels-1.onrender.com/api/orders/', orderData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        console.log('Order placed successfully:', response.data);
-  
-        // Call emptyCart to remove all items from the cart
-        await emptyCart();
-  
-        // Resetting form fields after successful order placement
-        setName('');
-        setPhone('');
-        setSelectedBillingAddress('');
-        setSelectedShippingAddress('');
-        setCouponCode('');
-        setDiscount(0);
-        setOrderItems([]);
-  
-        // Navigate to the Thank You page with order summary
-        navigate('/thank-you', { state: { orderSummary: response.data } });
-  
-      } catch (error) {
-        console.error('Error placing order:', error);
-        setError('Failed to place order. Please try again later.');
-      }
-    }, 2000); // Delay execution by 2000 milliseconds (2 seconds)
+
+    const orderData = {
+      total_price: calculateTotalCost(),
+      name,
+      phone_number: phone,
+      shipping_address: selectedShippingAddress,
+      billing_address: selectedBillingAddress,
+      coupon_applied: couponCode,
+      order_items: orderItems,
+      payment_method: 'RAZORPAY',
+      payment_id: paymentId, // Include the Razorpay payment ID
+    };
+
+    try {
+      const response = await axios.post('https://as-jewels-1.onrender.com/api/orders/', orderData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      console.log('Order placed successfully:', response.data);
+
+      setName('');
+      setPhone('');
+      setSelectedBillingAddress('');
+      setSelectedShippingAddress('');
+      setCouponCode('');
+      setDiscount(0);
+      setOrderItems([]);
+
+      navigate('/thank-you', { state: { orderSummary: response.data } });
+    } catch (error) {
+      console.error('Error placing order:', error);
+      setError('Failed to place order. Please try again later.');
+    }
   };
-  
-  
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
       <div>
         <h1 className="text-2xl font-bold">Checkout</h1>
         {error && <p className="text-red-500">{error}</p>}
-        <form onSubmit={placeOrder} id='checkout-form'>
+        <form id="checkout-form">
           <div className="mb-4">
             <label className="block text-sm font-medium text-gray-700">Name</label>
             <input
@@ -187,19 +171,6 @@ const CheckoutForm = () => {
               </option>
             ))}
           </select>
-
-          {/* Payment Method Selection */}
-          <h2 className="text-lg font-medium mt-4">Select Payment Method</h2>
-          <select
-            value={paymentMethod}
-            onChange={(e) => setPaymentMethod(e.target.value)}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-            required
-          >
-            <option value="PAYPAL">PayPal</option>
-            <option value="CARD">Credit/Debit Card</option>
-            <option value="COD">Cash on Delivery</option>
-          </select>
         </form>
 
         <div className="mt-4">
@@ -218,11 +189,10 @@ const CheckoutForm = () => {
           )}
         </div>
         <button
-          type="submit"
-          form='checkout-form'
+          onClick={handleRazorpayPayment}
           className="mt-4 inline-block bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
         >
-          Place Order
+          Pay with Razorpay
         </button>
       </div>
 
