@@ -69,11 +69,15 @@ const CartSummary = ({ couponCode, setCouponCode, discount, setDiscount, subtota
             <ul>
               {cartItems.map((item) => (
                 <li key={item.product.id} className="mb-2 flex items-center">
-                  <img
-                    src={`https://as-jewels-1.onrender.com/${item.product.image}`}
-                    alt={item.product.name}
-                    className="w-16 h-16 object-cover rounded-md mr-2"
-                  />
+                 <img
+                      src={
+                           item.product.image
+                           ? `https://as-jewels-1.onrender.com${item.product.image}`
+                           : "/placeholder.png"
+                            }
+                          alt={item.product.name}
+                           className="w-16 h-16 object-cover rounded-md mr-2"
+                    />
                   <div>
                     <p>{item.product.name} x {item.quantity}</p>
                     <p>${(parseFloat(item.product.price) * item.quantity).toFixed(2)}</p>
