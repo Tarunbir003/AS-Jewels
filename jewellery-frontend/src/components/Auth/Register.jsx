@@ -41,20 +41,12 @@ const Register = () => {
 <App_info/>
 <div className="flex min-h-screen items-center bg-white min-w-8 max-w-96 flex-1 flex-col justify-center px-6 py-12 lg:px-8 scale-99">
 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
- <div className="flex justify-center items-center mb-6">
+ <div className="flex justify-center items-center mb-8">
   <a href="/">
     <img 
-      src="/logo.png" 
+      src="/logo.png"
       alt="AS Jewels Logo"
-      style={{
-        height: "100px",      
-        objectFit: "contain",
-        marginBottom: "1rem",
-        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
-        transition: "transform 0.3s ease-in-out",
-      }}
-      onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
-      onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+      className="h-32 w-32 object-contain rounded-lg shadow-lg hover:scale-105 transition-transform duration-300"
     />
   </a>
 </div>
