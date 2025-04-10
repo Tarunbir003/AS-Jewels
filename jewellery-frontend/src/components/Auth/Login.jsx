@@ -42,19 +42,20 @@ const Login = () => {
       <App_info />
       <div className="flex min-h-screen items-center bg-white min-w-8 max-w-96 flex-1 flex-col justify-center px-6 py-12 lg:px-8 scale-99">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <div className="flex justify-center items-center mb-6">
-          <div className="flex justify-center items-center mb-6">
-            <a href="/">
-             <img 
-             className="h-28 w-auto drop-shadow-xl" 
-               src="/logo.png" 
-               alt="AS Jewels Logo"/>
-            </a>
-           </div> 
-            <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-            Sign in to your account
-          </h2>
-        </div>
+  <div className="flex justify-center items-center mb-6">
+    <a href="/">
+      <img 
+        className="h-28 w-auto drop-shadow-xl" 
+        src="/logo.png" 
+        alt="AS Jewels Logo"
+      />
+    </a>
+  </div>
+  <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+    Sign in to your account
+  </h2>
+</div>
+
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form className="space-y-6" onSubmit={handleSubmit}>
