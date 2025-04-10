@@ -7,6 +7,7 @@ const JewelryCustomizationRequests = () => {
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [dateFilter, setDateFilter] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
   const [sortOrder, setSortOrder] = useState("newest");
 
   const token = localStorage.getItem("accessToken");
@@ -19,7 +20,11 @@ const JewelryCustomizationRequests = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        setRequests(response.data);
+        const withStatus = response.data.map(req => ({
+          ...req,
+          localStatus: "Pending",
+        }));
+        setRequests(withStatus);
       } catch (error) {
         console.error("Error fetching customization requests:", error);
         setError("Failed to fetch customization requests. Please try again later.");
@@ -40,7 +45,8 @@ const JewelryCustomizationRequests = () => {
           req.material.toLowerCase().includes(term) ||
           (req.engraving_text && req.engraving_text.toLowerCase().includes(term)) ||
           req.price.toString().includes(term)) &&
-        (dateFilter === "" || createdAt === dateFilter)
+        (dateFilter === "" || createdAt === dateFilter) &&
+        (statusFilter === "" || req.localStatus === statusFilter)
       );
     })
     .sort((a, b) => {
@@ -56,24 +62,35 @@ const JewelryCustomizationRequests = () => {
     <div className="max-w-6xl mx-auto p-4">
       <h2 className="text-2xl font-bold mb-4">Jewelry Customization Requests</h2>
 
-      <div className="flex flex-col sm:flex-row gap-4 mb-4">
+      <div className="flex flex-col sm:flex-row gap-4 mb-4 flex-wrap">
         <input
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search by type, material, engraving, or price..."
-          className="w-full sm:w-1/3 border px-3 py-2 rounded"
+          className="w-full sm:w-1/4 border px-3 py-2 rounded"
         />
         <input
           type="date"
           value={dateFilter}
           onChange={(e) => setDateFilter(e.target.value)}
-          className="w-full sm:w-1/3 border px-3 py-2 rounded"
+          className="w-full sm:w-1/4 border px-3 py-2 rounded"
         />
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="w-full sm:w-1/4 border px-3 py-2 rounded"
+        >
+          <option value="">All Statuses</option>
+          <option value="Pending">Pending</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Completed">Completed</option>
+          <option value="Declined">Declined</option>
+        </select>
         <select
           value={sortOrder}
           onChange={(e) => setSortOrder(e.target.value)}
-          className="w-full sm:w-1/3 border px-3 py-2 rounded"
+          className="w-full sm:w-1/4 border px-3 py-2 rounded"
         >
           <option value="newest">Newest First</option>
           <option value="oldest">Oldest First</option>
@@ -90,6 +107,7 @@ const JewelryCustomizationRequests = () => {
             <th className="border px-4 py-2">Price</th>
             <th className="border px-4 py-2">Creator</th>
             <th className="border px-4 py-2">Created At</th>
+            <th className="border px-4 py-2">Status</th>
           </tr>
         </thead>
         <tbody>
@@ -102,6 +120,7 @@ const JewelryCustomizationRequests = () => {
               <td className="border px-4 py-2">${request.price}</td>
               <td className="border px-4 py-2">{request.creator_name}</td>
               <td className="border px-4 py-2">{new Date(request.created_at).toLocaleString()}</td>
+              <td className="border px-4 py-2">{request.localStatus}</td>
             </tr>
           ))}
         </tbody>
