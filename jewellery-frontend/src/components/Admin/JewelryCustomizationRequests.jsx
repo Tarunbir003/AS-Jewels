@@ -8,6 +8,7 @@ const JewelryCustomizationRequests = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
+  const [sortOrder, setSortOrder] = useState("newest");
   const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
@@ -40,18 +41,24 @@ const JewelryCustomizationRequests = () => {
     );
   };
 
-  const filteredRequests = requests.filter(req => {
-    const term = searchTerm.toLowerCase();
-    const createdAt = new Date(req.created_at).toISOString().split("T")[0];
-    return (
-      (req.jewelry_type.toLowerCase().includes(term) ||
-        req.material.toLowerCase().includes(term) ||
-        req.engraving_text.toLowerCase().includes(term) ||
-        req.price.toString().includes(term)) &&
-      (statusFilter === "" || req.localStatus === statusFilter) &&
-      (dateFilter === "" || createdAt === dateFilter)
-    );
-  });
+  const filteredRequests = requests
+    .filter(req => {
+      const term = searchTerm.toLowerCase();
+      const createdAt = new Date(req.created_at).toISOString().split("T")[0];
+      return (
+        (req.jewelry_type.toLowerCase().includes(term) ||
+          req.material.toLowerCase().includes(term) ||
+          req.engraving_text.toLowerCase().includes(term) ||
+          req.price.toString().includes(term)) &&
+        (statusFilter === "" || req.localStatus === statusFilter) &&
+        (dateFilter === "" || createdAt === dateFilter)
+      );
+    })
+    .sort((a, b) => {
+      const dateA = new Date(a.created_at);
+      const dateB = new Date(b.created_at);
+      return sortOrder === "oldest" ? dateA - dateB : dateB - dateA;
+    });
 
   if (loading) return <div className="text-center">Loading...</div>;
   if (error) return <div className="text-red-500 text-center">{error}</div>;
@@ -66,12 +73,12 @@ const JewelryCustomizationRequests = () => {
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           placeholder="Search by type, material, engraving, or price..."
-          className="w-full sm:w-1/3 border px-3 py-2 rounded"
+          className="w-full sm:w-1/4 border px-3 py-2 rounded"
         />
         <select
           value={statusFilter}
           onChange={(e) => setStatusFilter(e.target.value)}
-          className="w-full sm:w-1/3 border px-3 py-2 rounded"
+          className="w-full sm:w-1/4 border px-3 py-2 rounded"
         >
           <option value="">All Statuses</option>
           <option value="Pending">Pending</option>
@@ -83,8 +90,16 @@ const JewelryCustomizationRequests = () => {
           type="date"
           value={dateFilter}
           onChange={(e) => setDateFilter(e.target.value)}
-          className="w-full sm:w-1/3 border px-3 py-2 rounded"
+          className="w-full sm:w-1/4 border px-3 py-2 rounded"
         />
+        <select
+          value={sortOrder}
+          onChange={(e) => setSortOrder(e.target.value)}
+          className="w-full sm:w-1/4 border px-3 py-2 rounded"
+        >
+          <option value="newest">Newest First</option>
+          <option value="oldest">Oldest First</option>
+        </select>
       </div>
 
       <table className="min-w-full bg-white border border-gray-200 text-sm">
