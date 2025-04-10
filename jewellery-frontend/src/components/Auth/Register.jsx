@@ -44,12 +44,13 @@ const Register = () => {
    <div className="flex justify-center items-center mb-6">
   <a href="/">
     <img 
-      className="h-40 w-auto drop-shadow-xl hover:scale-105 transition-transform duration-300" 
+      className="h-28 w-auto drop-shadow-xl" 
       src="/logo.png" 
-      alt="AS Jewels Logo" 
+      alt="AS Jewels Logo"
     />
   </a>
 </div>
+
         <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Create your account
         </h2>
