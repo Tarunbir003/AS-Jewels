@@ -138,10 +138,14 @@ export default function Cart({ open, setOpen , refreshCart}) {
                           <li key={item.product.id} className="flex py-6">
                             <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">
                               <img
-                                alt={item.product.name}
-                                src={`https://as-jewels-1.onrender.com/${item.product.image}`}
-                                className="h-full w-full object-cover object-center"
-                              />
+                                   alt={item.product.name}
+                                   src={
+                                    item.product.image
+                                    ? `https://as-jewels-1.onrender.com${item.product.image}`
+                                    : "/placeholder.png"
+                                                }
+                                    className="h-full w-full object-cover object-center"
+                                />
                             </div>
 
                             <div className="ml-4 flex flex-1 flex-col">
