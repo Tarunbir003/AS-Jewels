@@ -9,15 +9,14 @@ const JewelryCustomizationRequests = () => {
   const [statusFilter, setStatusFilter] = useState("");
   const [dateFilter, setDateFilter] = useState("");
   const [sortOrder, setSortOrder] = useState("newest");
+
   const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
     const fetchCustomizationRequests = async () => {
       try {
         const response = await axios.get("https://as-jewels-1.onrender.com/api/jewelry_customization/", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+          headers: { Authorization: `Bearer ${token}` },
         });
         const withStatus = response.data.map(req => ({
           ...req,
@@ -47,9 +46,10 @@ const JewelryCustomizationRequests = () => {
       const createdAt = new Date(req.created_at).toISOString().split("T")[0];
       return (
         (req.jewelry_type.toLowerCase().includes(term) ||
-          req.material.toLowerCase().includes(term) ||
-          req.engraving_text.toLowerCase().includes(term) ||
-          req.price.toString().includes(term)) &&
+         req.material.toLowerCase().includes(term) ||
+         req.engraving_text.toLowerCase().includes(term) ||
+         req.price.toString().includes(term) ||
+         (req.contact_info && req.contact_info.toLowerCase().includes(term))) &&
         (statusFilter === "" || req.localStatus === statusFilter) &&
         (dateFilter === "" || createdAt === dateFilter)
       );
@@ -72,7 +72,7 @@ const JewelryCustomizationRequests = () => {
           type="text"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          placeholder="Search by type, material, engraving, or price..."
+          placeholder="Search by type, material, engraving, price or contact info..."
           className="w-full sm:w-1/4 border px-3 py-2 rounded"
         />
         <select
@@ -110,7 +110,7 @@ const JewelryCustomizationRequests = () => {
             <th className="border px-4 py-2">Size</th>
             <th className="border px-4 py-2">Engraving</th>
             <th className="border px-4 py-2">Price</th>
-            <th className="border px-4 py-2">Creator</th>
+            <th className="border px-4 py-2">Contact Info</th>
             <th className="border px-4 py-2">Created At</th>
             <th className="border px-4 py-2">Status</th>
           </tr>
@@ -123,7 +123,7 @@ const JewelryCustomizationRequests = () => {
               <td className="border px-4 py-2">{request.size}</td>
               <td className="border px-4 py-2">{request.engraving_text}</td>
               <td className="border px-4 py-2">${request.price}</td>
-              <td className="border px-4 py-2">{request.creator_name}</td>
+              <td className="border px-4 py-2">{request.contact_info || "N/A"}</td>
               <td className="border px-4 py-2">{new Date(request.created_at).toLocaleString()}</td>
               <td className="border px-4 py-2">
                 <select
