@@ -22,7 +22,7 @@ const JewelryCustomizationRequests = () => {
         });
         const withStatus = response.data.map(req => ({
           ...req,
-          localStatus: "Pending",
+          localStatus: req.localStatus || "Pending",
         }));
         setRequests(withStatus);
       } catch (error) {
@@ -35,6 +35,12 @@ const JewelryCustomizationRequests = () => {
 
     fetchCustomizationRequests();
   }, [token]);
+
+  const updateLocalStatus = (id, newStatus) => {
+    setRequests(prev =>
+      prev.map(req => req.id === id ? { ...req, localStatus: newStatus } : req)
+    );
+  };
 
   const filteredRequests = requests
     .filter((req) => {
@@ -120,7 +126,18 @@ const JewelryCustomizationRequests = () => {
               <td className="border px-4 py-2">${request.price}</td>
               <td className="border px-4 py-2">{request.creator_name}</td>
               <td className="border px-4 py-2">{new Date(request.created_at).toLocaleString()}</td>
-              <td className="border px-4 py-2">{request.localStatus}</td>
+              <td className="border px-4 py-2">
+                <select
+                  value={request.localStatus}
+                  onChange={(e) => updateLocalStatus(request.id, e.target.value)}
+                  className="border rounded px-2 py-1 text-xs"
+                >
+                  <option value="Pending">Pending</option>
+                  <option value="In Progress">In Progress</option>
+                  <option value="Completed">Completed</option>
+                  <option value="Declined">Declined</option>
+                </select>
+              </td>
             </tr>
           ))}
         </tbody>
