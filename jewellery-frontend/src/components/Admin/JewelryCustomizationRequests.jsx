@@ -6,6 +6,8 @@ const JewelryCustomizationRequests = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [statusFilter, setStatusFilter] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
   const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
@@ -40,11 +42,14 @@ const JewelryCustomizationRequests = () => {
 
   const filteredRequests = requests.filter(req => {
     const term = searchTerm.toLowerCase();
+    const createdAt = new Date(req.created_at).toISOString().split("T")[0];
     return (
-      req.jewelry_type.toLowerCase().includes(term) ||
-      req.material.toLowerCase().includes(term) ||
-      req.engraving_text.toLowerCase().includes(term) ||
-      req.price.toString().includes(term)
+      (req.jewelry_type.toLowerCase().includes(term) ||
+        req.material.toLowerCase().includes(term) ||
+        req.engraving_text.toLowerCase().includes(term) ||
+        req.price.toString().includes(term)) &&
+      (statusFilter === "" || req.localStatus === statusFilter) &&
+      (dateFilter === "" || createdAt === dateFilter)
     );
   });
 
@@ -55,13 +60,32 @@ const JewelryCustomizationRequests = () => {
     <div className="max-w-6xl mx-auto p-4">
       <h2 className="text-2xl font-bold mb-4">Jewelry Customization Requests</h2>
 
-      <input
-        type="text"
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="Search by type, material, engraving, or price..."
-        className="w-full border px-3 py-2 mb-4 rounded"
-      />
+      <div className="flex flex-col sm:flex-row gap-4 mb-4">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search by type, material, engraving, or price..."
+          className="w-full sm:w-1/3 border px-3 py-2 rounded"
+        />
+        <select
+          value={statusFilter}
+          onChange={(e) => setStatusFilter(e.target.value)}
+          className="w-full sm:w-1/3 border px-3 py-2 rounded"
+        >
+          <option value="">All Statuses</option>
+          <option value="Pending">Pending</option>
+          <option value="In Progress">In Progress</option>
+          <option value="Completed">Completed</option>
+          <option value="Declined">Declined</option>
+        </select>
+        <input
+          type="date"
+          value={dateFilter}
+          onChange={(e) => setDateFilter(e.target.value)}
+          className="w-full sm:w-1/3 border px-3 py-2 rounded"
+        />
+      </div>
 
       <table className="min-w-full bg-white border border-gray-200 text-sm">
         <thead>
