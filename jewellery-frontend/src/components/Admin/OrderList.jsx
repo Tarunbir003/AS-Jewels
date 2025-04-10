@@ -200,11 +200,15 @@ const OrderList = () => {
                     <strong>Quantity:</strong> {item.quantity}
                   </p>
                   <div className="flex items-center mt-2">
-                    <img
-                      src={item.product.image}
-                      alt={item.product.name}
-                      className="w-16 h-16 object-cover rounded-md mr-2"
-                    />
+              <img
+                  src={
+                   item.product.image
+                        ? `https://as-jewels-1.onrender.com${item.product.image}`
+                           : "/placeholder.png"
+                              }
+                              alt={item.product.name}
+                            className="w-16 h-16 object-cover rounded-md mr-2"
+                         />
                   </div>
                 </li>
               ))}
