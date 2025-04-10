@@ -8,7 +8,6 @@ const JewelryCustomizationForm = () => {
     size: "",
     engraving_text: "",
     price: "",
-    contact_info: "",
   });
 
   const [error, setError] = useState("");
@@ -38,7 +37,6 @@ const JewelryCustomizationForm = () => {
         size: "",
         engraving_text: "",
         price: "",
-        contact_info: "",
       });
     } catch (err) {
       console.error(err);
@@ -86,19 +84,6 @@ const JewelryCustomizationForm = () => {
         <div>
           <label className="block font-medium">Price</label>
           <input type="number" name="price" value={formData.price} onChange={handleChange} required className="w-full border p-2 rounded" />
-        </div>
-
-        <div>
-          <label className="block font-medium">Contact Info</label>
-          <input
-            type="text"
-            name="contact_info"
-            value={formData.contact_info}
-            onChange={handleChange}
-            placeholder="Phone or WhatsApp"
-            required
-            className="w-full border p-2 rounded"
-          />
         </div>
 
         <button type="submit" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded">
