@@ -41,15 +41,24 @@ const Register = () => {
 <App_info/>
 <div className="flex min-h-screen items-center bg-white min-w-8 max-w-96 flex-1 flex-col justify-center px-6 py-12 lg:px-8 scale-99">
 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-  <div className="flex justify-center items-center mt-6 mb-10">
-    <a href="/">
+ <div className="flex justify-center items-center mb-6">
+  <a href="/">
     <img 
-      className="h-32 w-auto drop-shadow-xl hover:scale-105 transition-transform duration-300" 
       src="/logo.png" 
-      alt="AS Jewels Logo" 
-         />
-        </a>
-      </div>
+      alt="AS Jewels Logo"
+      style={{
+        height: "100px",      
+        objectFit: "contain",
+        marginBottom: "1rem",
+        boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+        transition: "transform 0.3s ease-in-out",
+      }}
+      onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+      onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
+    />
+  </a>
+</div>
+
  <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
           Create your account
         </h2>
