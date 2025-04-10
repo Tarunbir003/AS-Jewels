@@ -5,6 +5,7 @@ const JewelryCustomizationRequests = () => {
   const [requests, setRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const token = localStorage.getItem("accessToken");
 
   useEffect(() => {
@@ -15,7 +16,6 @@ const JewelryCustomizationRequests = () => {
             Authorization: `Bearer ${token}`,
           },
         });
-        // Add default status locally if not present
         const withStatus = response.data.map(req => ({
           ...req,
           localStatus: "Pending",
@@ -38,12 +38,31 @@ const JewelryCustomizationRequests = () => {
     );
   };
 
+  const filteredRequests = requests.filter(req => {
+    const term = searchTerm.toLowerCase();
+    return (
+      req.jewelry_type.toLowerCase().includes(term) ||
+      req.material.toLowerCase().includes(term) ||
+      req.engraving_text.toLowerCase().includes(term) ||
+      req.price.toString().includes(term)
+    );
+  });
+
   if (loading) return <div className="text-center">Loading...</div>;
   if (error) return <div className="text-red-500 text-center">{error}</div>;
 
   return (
     <div className="max-w-6xl mx-auto p-4">
       <h2 className="text-2xl font-bold mb-4">Jewelry Customization Requests</h2>
+
+      <input
+        type="text"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        placeholder="Search by type, material, engraving, or price..."
+        className="w-full border px-3 py-2 mb-4 rounded"
+      />
+
       <table className="min-w-full bg-white border border-gray-200 text-sm">
         <thead>
           <tr className="bg-gray-200">
@@ -58,7 +77,7 @@ const JewelryCustomizationRequests = () => {
           </tr>
         </thead>
         <tbody>
-          {requests.map(request => (
+          {filteredRequests.map(request => (
             <tr key={request.id} className="hover:bg-gray-100">
               <td className="border px-4 py-2">{request.jewelry_type}</td>
               <td className="border px-4 py-2">{request.material}</td>
