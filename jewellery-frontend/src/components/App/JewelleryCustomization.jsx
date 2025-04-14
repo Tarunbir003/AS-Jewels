@@ -14,10 +14,10 @@ const JewelryCustomizationForm = () => {
   const [success, setSuccess] = useState(null);
   const [jewelryTypes, setJewelryTypes] = useState([]);
   const [materials, setMaterials] = useState([]);
+  const [wordCount, setWordCount] = useState(0);
 
-  const token = localStorage.getItem('accessToken'); // Get JWT token or any auth method you use
+  const token = localStorage.getItem('accessToken');
 
-  // Base prices for jewelry types and materials (you can fetch these from the backend too)
   const basePrices = {
     jewelry_type: {
       ring: 100,
@@ -32,7 +32,6 @@ const JewelryCustomizationForm = () => {
     },
   };
 
-  // Hardcoded images for each jewelry type and material
   const jewelryImages = {
     ring: {
       gold: '/images/ring_gold.jpg',
@@ -56,16 +55,6 @@ const JewelryCustomizationForm = () => {
     },
   };
 
-  // Hardcoded reviews
-  const reviews = [
-    { name: 'Alice', rating: 5, comment: 'Absolutely love my new necklace!' },
-    { name: 'Bob', rating: 4, comment: 'Great quality and fast shipping.' },
-    { name: 'Charlie', rating: 5, comment: 'Beautiful ring! Highly recommend.' },
-    { name: 'Diana', rating: 3, comment: 'It was okay, but not what I expected.' },
-    { name: 'Eve', rating: 5, comment: 'Perfect customization, I am very happy!' },
-  ];
-
-  // Fetch jewelry types and materials from the backend
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -83,20 +72,27 @@ const JewelryCustomizationForm = () => {
     fetchData();
   }, [token]);
 
-  // Function to calculate price based on selected options
   const calculatePrice = (type, material, engraving) => {
     const typePrice = basePrices.jewelry_type[type] || 0;
     const materialPrice = basePrices.material[material] || 0;
-    const engravingPrice = engraving ? 100 : 0; // Add $100 if engraving text is not empty
-
-    return typePrice + materialPrice + engravingPrice; // Return the total price
+    const engravingPrice = engraving ? 100 : 0;
+    return typePrice + materialPrice + engravingPrice;
   };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const newFormData = { ...formData, [name]: value };
+    const newFormData = { ...formData };
 
-    // Recalculate the price if either jewelry type, material, or engraving changes
+    if (name === 'engraving_text') {
+      const wordCountValue = value.trim().split(/\s+/).filter(Boolean).length;
+      if (wordCountValue <= 500) {
+        newFormData[name] = value;
+        setWordCount(wordCountValue);
+      }
+    } else {
+      newFormData[name] = value;
+    }
+
     if (name === 'jewelry_type' || name === 'material' || name === 'engraving_text') {
       const updatedPrice = calculatePrice(
         newFormData.jewelry_type,
@@ -112,6 +108,12 @@ const JewelryCustomizationForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const wordCountValue = formData.engraving_text.trim().split(/\s+/).filter(Boolean).length;
+    if (wordCountValue > 500) {
+      setError('Engraving text exceeds the 500-word limit.');
+      return;
+    }
+
     try {
       const response = await axios.post('https://as-jewels-1.onrender.com/api/jewelry_customization/', formData, {
         headers: {
@@ -126,7 +128,7 @@ const JewelryCustomizationForm = () => {
       }
     } catch (error) {
       console.error('Error:', error);
-      console.error('Error Details:', error.response?.data); // Log detailed error
+      console.error('Error Details:', error.response?.data);
       setError(error.response?.data?.detail || 'There was an error submitting your customization.');
     }
   };
@@ -175,14 +177,18 @@ const JewelryCustomizationForm = () => {
             className="border p-2 mb-4 w-full rounded"
           />
 
-          <label className="block mb-2 text-lg font-semibold">Description (Optional)</label>
-          <input
-            type="text"
+          <label className="block mb-2 text-lg font-semibold">Engraving / Description (Optional)</label>
+          <textarea
             name="engraving_text"
             value={formData.engraving_text}
             onChange={handleChange}
-            className="border p-2 mb-4 w-full rounded"
+            rows="4"
+            className="border p-2 mb-1 w-full rounded resize-none"
+            placeholder="Enter up to 500 words"
           />
+          <p className={`text-sm mb-4 ${wordCount > 500 ? 'text-red-600' : 'text-gray-600'}`}>
+            {wordCount}/500 words
+          </p>
 
           <label className="block mb-2 text-lg font-semibold">Price</label>
           <input
@@ -199,7 +205,6 @@ const JewelryCustomizationForm = () => {
           </button>
         </form>
 
-        {/* Image display section */}
         {formData.jewelry_type && formData.material && (
           <div className="flex justify-center items-center mt-4 md:mt-0 md:ml-4">
             <img
@@ -211,54 +216,17 @@ const JewelryCustomizationForm = () => {
         )}
       </div>
 
-      {/* Review Section */}
-      <div className="mt-10">
-        <h2 className="text-2xl font-semibold mb-4">Customer Reviews</h2>
-        <div className="flex flex-wrap justify-center">
-          {reviews.map((review, index) => (
-            <div key={index} className="bg-white p-4 m-2 rounded-lg shadow-md transform hover:scale-105 transition-transform duration-300 ease-in-out">
-              <div className="flex items-center mb-2">
-                {[...Array(review.rating)].map((_, starIndex) => (
-                  <span key={starIndex} className="text-yellow-500">★</span>
-                ))}
-                {[...Array(5 - review.rating)].map((_, starIndex) => (
-                  <span key={starIndex} className="text-gray-300">★</span>
-                ))}
-              </div>
-              <p className="text-gray-800 font-semibold">{review.name}</p>
-              <p className="text-gray-600">{review.comment}</p>
-            </div>
-          ))}
-        </div>
+      <div className="mt-10 p-6 bg-gray-100 rounded-lg shadow-md text-center">
+        <h1 className="text-xl font-semibold text-gray-800 mb-2">
+          For more information, please contact:
+        </h1>
+        <p className="text-lg text-blue-600 font-medium">
+          +1 9876543210
+        </p>
+        <p className="text-lg text-blue-600 font-medium">
+          or email: <a href="mailto:thejm@gmail.com" className="underline">thejm@gmail.com</a>
+        </p>
       </div>
-
-      <style jsx>{`
-        /* Marquee effect for reviews */
-        .marquee {
-          overflow: hidden;
-          white-space: nowrap;
-          animation: marquee 20s linear infinite;
-        }
-        @keyframes marquee {
-          0% { transform: translateX(100%); }
-          100% { transform: translateX(-100%); }
-        }
-      `}</style>
-
-
-
-<div className="mt-10 p-6 bg-gray-100 rounded-lg shadow-md text-center">
-  <h1 className="text-xl font-semibold text-gray-800 mb-2">
-    For more information, please contact:
-  </h1>
-  <p className="text-lg text-blue-600 font-medium">
-    +1 9876543210
-  </p>
-  <p className="text-lg text-blue-600 font-medium">
-    or email: <a href="mailto:thejm@gmail.com" className="underline">thejm@gmail.com</a>
-  </p>
-</div>
-
     </div>
   );
 };
