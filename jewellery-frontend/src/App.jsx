@@ -21,6 +21,9 @@ import ProductPage from "./components/App/ProductPage";
 // import PaymentSuccess from "./components/App/PaymentSuccess";
 import PaymentCancel from "./components/App/PaymentCancel";
 
+// ✅ NEW IMPORT
+import JewelryCustomizationDetail from "./components/Admin/JewelryCustomizationDetail";
+
 function AppLayout() {
   const location = useLocation();
 
@@ -29,11 +32,8 @@ function AppLayout() {
 
   return (
     <>
-      {/* Render Header only if not on login/register/adminreg pages */}
       {!hideHeaderFooter && <Header />}
-
       <div>
-        {/* Render ChatBot only if not on login/register/adminreg pages */}
         {!hideHeaderFooter && <ChatBot />}
 
         <Routes>
@@ -58,18 +58,19 @@ function AppLayout() {
           {/* Product Details Route */}
           <Route path="/product/:id" element={<ProductPage />} />
 
+          {/* NEW DETAIL VIEW ROUTE FOR CUSTOMIZATION */}
+          <Route path="/admin/customization/:id" element={<JewelryCustomizationDetail />} />
+
           {/* Admin Route (Protected) */}
           <Route path="/admin" element={<ProtectedRoute element={<Admin />} />} />
         </Routes>
       </div>
 
-      {/* Render Footer only if not on login/register/adminreg pages */}
       {!hideHeaderFooter && <Footer />}
     </>
   );
 }
 
-// Wrap AppLayout with Router to provide routing context
 function App() {
   return (
     <Router>
