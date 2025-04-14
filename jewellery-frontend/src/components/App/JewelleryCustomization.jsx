@@ -175,7 +175,7 @@ const JewelryCustomizationForm = () => {
             className="border p-2 mb-4 w-full rounded"
           />
 
-          <label className="block mb-2 text-lg font-semibold">Engraving (Optional)</label>
+          <label className="block mb-2 text-lg font-semibold">Description (Optional)</label>
           <input
             type="text"
             name="engraving_text"
