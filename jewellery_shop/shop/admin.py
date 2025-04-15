@@ -30,9 +30,21 @@ class OrderItemInline(admin.TabularInline):
 
 # Admin for Order model
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ('user', 'total_price', 'created_at')
-    search_fields = ('user__username',)
+    list_display = ('user', 'total_price', 'status', 'created_at')
+    search_fields = ('user__username', 'status')
+    list_filter = ('status', 'payment_method', 'created_at')
+    readonly_fields = ('created_at',)
+
     inlines = [OrderItemInline]
+
+    fieldsets = (
+        ('Order Details', {
+            'fields': ('user', 'total_price', 'status', 'payment_method', 'coupon_applied', 'created_at')
+        }),
+        ('Shipping Information', {
+            'fields': ('name', 'phone_number', 'billing_address', 'shipping_address')
+        }),
+    )
 
 # Inline for CartItems in the Cart view
 class CartItemInline(admin.TabularInline):
