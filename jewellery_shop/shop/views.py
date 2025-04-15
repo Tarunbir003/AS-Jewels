@@ -473,3 +473,26 @@ class ProductFilterView(APIView):
         serializer = ProductSerializer(products, many=True)
 
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+@api_view(['PATCH'])
+@permission_classes([IsAuthenticated])
+def update_customization_status(request, pk):
+    try:
+        customization = JewelryCustomization.objects.get(pk=pk)
+    except JewelryCustomization.DoesNotExist:
+        return Response({"error": "Customization request not found"}, status=404)
+
+    # Optional: only allow admin or owner to update
+    if request.user != customization.user and not request.user.is_superuser:
+        return Response({"error": "Permission denied"}, status=403)
+
+    new_status = request.data.get("status")
+    if new_status not in ["Pending", "In Progress", "Completed"]:
+        return Response({"error": "Invalid status"}, status=400)
+
+    customization.status = new_status
+    customization.save()
+
+    serializer = JewelryCustomizationSerializer(customization)
+    return Response(serializer.data)
+
