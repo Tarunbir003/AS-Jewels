@@ -63,7 +63,7 @@ const InsightsDashboard = () => {
     <div className="insights-dashboard">
       <h2 className="text-2xl font-semibold">Business Insights</h2>
       <div>
-        <h3>Total Revenue: ${insights.reduce((acc, curr) => acc + curr.total_revenue, 0)}</h3>
+        <h3>Total Revenue: ₹{insights.reduce((acc, curr) => acc + curr.total_revenue, 0)}</h3>
         <h3>Total Orders: {insights.reduce((acc, curr) => acc + curr.total_orders, 0)}</h3>
       </div>
       {insights.length > 0 ? (
