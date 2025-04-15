@@ -46,23 +46,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Right Section - Newsletter Signup */}
-        <div>
-          <h3 className="text-lg font-semibold mb-4 text-[#E1B879]">Subscribe to Our Newsletter</h3>
-          <p className="text-[#F4E3C3] text-sm mb-5 italic">Get exclusive offers & the latest updates.</p>
-          <div className="flex">
-            <input 
-              type="email" 
-              placeholder="Enter your email" 
-              className="px-4 py-3 bg-[#F4E3C3] border border-[#E1B879] text-[#770523] rounded-l focus:outline-none placeholder-[#770523] w-64"
-            />
-            <button className="bg-[#E1B879] px-5 py-3 text-[#770523] font-semibold rounded-r hover:bg-[#F4E3C3] transition">
-              Subscribe
-            </button>
-          </div>
-        </div>
-      </div>
-
+        
     
     </footer>
   );
