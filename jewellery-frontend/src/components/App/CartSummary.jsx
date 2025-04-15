@@ -10,7 +10,7 @@ const CartSummary = ({ couponCode, setCouponCode, discount, setDiscount, subtota
   useEffect(() => {
     const fetchCartItems = async () => {
       setLoading(true);
-      setError(null); // Reset error state
+      setError(null);
       try {
         const response = await axios.get('https://as-jewels-1.onrender.com/api/cart/', {
           headers: { Authorization: `Bearer ${token}` },
@@ -25,7 +25,7 @@ const CartSummary = ({ couponCode, setCouponCode, discount, setDiscount, subtota
           quantity: item.quantity
         }));
         
-        setOrderItems(orderItems); // Set order items in the required format
+        setOrderItems(orderItems);
         setCartItems(products);
 
         // Calculate subtotal
@@ -87,11 +87,11 @@ const CartSummary = ({ couponCode, setCouponCode, discount, setDiscount, subtota
             </ul>
           )}
           <div className="mt-4">
-            <p className="font-medium">Subtotal: ${subtotal.toFixed(2)}</p>
+            <p className="font-medium">Subtotal: ₹{subtotal.toFixed(2)}</p>
             {discount > 0 && (
-              <p className="font-medium text-green-500">Discount: -${discountAmount}</p>
+              <p className="font-medium text-green-500">Discount: -₹{discountAmount}</p>
             )}
-            <p className="font-medium">Total: ${total}</p>
+            <p className="font-medium">Total: ₹{total}</p>
           </div>
         </>
       )}
