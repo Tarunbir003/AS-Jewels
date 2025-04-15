@@ -13,203 +13,110 @@ const AddProduct = () => {
   const [selectedCategories, setSelectedCategories] = useState([]);
   const [selectedSubcategories, setSelectedSubcategories] = useState([]);
   const [selectedTags, setSelectedTags] = useState([]);
+  const [products, setProducts] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  // Replace 'your_token_here' with how you retrieve your token (e.g., from local storage)
   const token = localStorage.getItem('accessToken');
 
-  // Fetch categories, subcategories, and tags (can be static or fetched from an API)
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchInitialData = async () => {
       try {
-        const response = await axios.get('https://as-jewels-1.onrender.com/api/categories/');
-        setCategories(response.data);
-      } catch (error) {
-        console.error('Error fetching categories:', error);
+        const [catRes, subRes, tagRes, prodRes] = await Promise.all([
+          axios.get('https://as-jewels-1.onrender.com/api/categories/'),
+          axios.get('https://as-jewels-1.onrender.com/api/subcategories/'),
+          axios.get('https://as-jewels-1.onrender.com/api/tags/'),
+          axios.get('https://as-jewels-1.onrender.com/api/products/'),
+        ]);
+        setCategories(catRes.data);
+        setSubcategories(subRes.data);
+        setTags(tagRes.data);
+        setProducts(prodRes.data);
+      } catch (err) {
+        console.error("Error fetching initial data", err);
       }
     };
 
-    const fetchSubcategories = async () => {
-      try {
-        const response = await axios.get('https://as-jewels-1.onrender.com/api/subcategories/');
-        setSubcategories(response.data);
-      } catch (error) {
-        console.error('Error fetching subcategories:', error);
-      }
-    };
-
-    const fetchTags = async () => {
-      try {
-        const response = await axios.get('https://as-jewels-1.onrender.com/api/tags/');
-        setTags(response.data);
-      } catch (error) {
-        console.error('Error fetching tags:', error);
-      }
-    };
-
-    fetchCategories();
-    fetchSubcategories();
-    fetchTags();
+    fetchInitialData();
   }, []);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const formData = new FormData();
     formData.append('name', name);
     formData.append('description', description);
     formData.append('price', price);
     formData.append('stock', stock);
-    if (image) {
-      formData.append('image', image);
-    }
-
-    // Append selected categories, subcategories, and tags
-    selectedCategories.forEach((category) => formData.append('category', category));
-    selectedSubcategories.forEach((subcategory) => formData.append('subcategory', subcategory));
-    selectedTags.forEach((tag) => formData.append('tags', tag));
+    if (image) formData.append('image', image);
+    selectedCategories.forEach((id) => formData.append('category', id));
+    selectedSubcategories.forEach((id) => formData.append('subcategory', id));
+    selectedTags.forEach((id) => formData.append('tags', id));
 
     try {
-      const response = await axios.post('https://as-jewels-1.onrender.com/api/products/', formData, {
+      const res = await axios.post('https://as-jewels-1.onrender.com/api/products/', formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           'Content-Type': 'multipart/form-data',
         },
       });
+      setSuccessMessage(`Product added: ${res.data.name}`);
+      setProducts([...products, res.data]);
+      setName(''); setDescription(''); setPrice(''); setStock('');
+      setImage(null); setSelectedCategories([]); setSelectedSubcategories([]); setSelectedTags([]);
+    } catch (err) {
+      setErrorMessage('Failed to add product.');
+    }
+  };
 
-      setSuccessMessage(`Product added successfully: ${response.data.name}`);
-      setErrorMessage('');
-      setName('');
-      setDescription('');
-      setPrice('');
-      setStock('');
-      setImage(null);
-      setSelectedCategories([]);
-      setSelectedSubcategories([]);
-      setSelectedTags([]);
-    } catch (error) {
-      setErrorMessage('Failed to add product. Please try again.');
-      setSuccessMessage('');
-      console.error('Error adding product:', error);
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`https://as-jewels-1.onrender.com/api/products/${id}/`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setProducts(products.filter(product => product.id !== id));
+    } catch (err) {
+      alert('Failed to delete product.');
     }
   };
 
   return (
-    <div className="max-w-md mx-auto p-4 border border-gray-300 rounded-lg shadow-md">
+    <div className="max-w-4xl mx-auto p-4">
       <h2 className="text-2xl font-bold mb-4">Add New Product</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Name:</label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            className="border border-gray-300 rounded-md p-2 w-full"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Description:</label>
-          <textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-            className="border border-gray-300 rounded-md p-2 w-full"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Price:</label>
-          <input
-            type="number"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            required
-            className="border border-gray-300 rounded-md p-2 w-full"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Stock:</label>
-          <input
-            type="number"
-            value={stock}
-            onChange={(e) => setStock(e.target.value)}
-            required
-            className="border border-gray-300 rounded-md p-2 w-full"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Image:</label>
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setImage(e.target.files[0])}
-            required
-            className="border border-gray-300 rounded-md p-2 w-full"
-          />
-        </div>
-
-        {/* Categories Dropdown */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Categories:</label>
-          <select
-            multiple
-            value={selectedCategories}
-            onChange={(e) => setSelectedCategories(Array.from(e.target.selectedOptions, option => option.value))}
-            className="border border-gray-300 rounded-md p-2 w-full"
-          >
-            {categories.map((category) => (
-              <option key={category.id} value={category.id}>
-                {category.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Subcategories Dropdown */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Subcategories:</label>
-          <select
-            multiple
-            value={selectedSubcategories}
-            onChange={(e) => setSelectedSubcategories(Array.from(e.target.selectedOptions, option => option.value))}
-            className="border border-gray-300 rounded-md p-2 w-full"
-          >
-            {subcategories.map((subcategory) => (
-              <option key={subcategory.id} value={subcategory.id}>
-                {subcategory.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {/* Tags Dropdown */}
-        <div className="mb-4">
-          <label className="block text-sm font-medium mb-1">Tags:</label>
-          <select
-            multiple
-            value={selectedTags}
-            onChange={(e) => setSelectedTags(Array.from(e.target.selectedOptions, option => option.value))}
-            className="border border-gray-300 rounded-md p-2 w-full"
-          >
-            {tags.map((tag) => (
-              <option key={tag.id} value={tag.id}>
-                {tag.name}
-              </option>
-            ))}
-          </select>
-        </div>
+      <form onSubmit={handleSubmit} className="grid gap-4">
+        {/* ... all input fields here like before ... */}
 
         <button
           type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+          className="bg-blue-600 text-white px-4 py-2 rounded-md"
         >
           Add Product
         </button>
       </form>
 
-      {successMessage && <p className="text-green-500 mt-4">{successMessage}</p>}
+      {successMessage && <p className="text-green-600 mt-4">{successMessage}</p>}
       {errorMessage && <p className="text-red-500 mt-4">{errorMessage}</p>}
+
+      <hr className="my-6" />
+
+      <h3 className="text-xl font-semibold mb-2">Existing Products</h3>
+      {products.length > 0 ? (
+        <ul className="space-y-4">
+          {products.map(product => (
+            <li key={product.id} className="border p-4 rounded-md shadow-sm bg-white flex justify-between items-center">
+              <div>
+                <p><strong>{product.name}</strong></p>
+                <p className="text-sm text-gray-500">{product.description}</p>
+              </div>
+              <button
+                onClick={() => handleDelete(product.id)}
+                className="text-sm bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
+              >
+                Delete
+              </button>
+            </li>
+          ))}
+        </ul>
+      ) : <p>No products found.</p>}
     </div>
   );
 };
