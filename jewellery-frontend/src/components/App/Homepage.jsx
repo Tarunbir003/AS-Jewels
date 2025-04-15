@@ -76,7 +76,7 @@ const Homepage = () => {
                   />
                 </Link>
                 <h3 className="image-title">{product.name}</h3>
-                <p className="product-price">${product.price}</p>
+                <p className="product-price">₹{product.price}</p>
               </div>
             ))
           ) : (
