@@ -18,10 +18,12 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import ChatBot from "./components/Chatbot/ChatBot";
 import MetalPrices from "./components/App/MetalInvestPage";
 import ProductPage from "./components/App/ProductPage";
-// import PaymentSuccess from "./components/App/PaymentSuccess";
 import PaymentCancel from "./components/App/PaymentCancel";
+import OrderList from "./components/Admin/OrderList";
+import OrderDetails from "./components/Admin/OrderDetails"; 
 
-// ✅ NEW IMPORT
+
+
 import JewelryCustomizationDetail from "./components/Admin/JewelryCustomizationDetail";
 
 function AppLayout() {
@@ -57,9 +59,15 @@ function AppLayout() {
 
           {/* Product Details Route */}
           <Route path="/product/:id" element={<ProductPage />} />
+          
+         
 
-          {/* NEW DETAIL VIEW ROUTE FOR CUSTOMIZATION */}
+          {/* DETAIL VIEW ROUTE FOR CUSTOMIZATION */}
           <Route path="/admin/customization/:id" element={<JewelryCustomizationDetail />} />
+          
+          {/* ADMIN ORDER ROUTES */}
+          <Route path="/admin/orders" element={<OrderList />} />
+          <Route path="/admin/orders/:id" element={<OrderDetails />} />
 
           {/* Admin Route (Protected) */}
           <Route path="/admin" element={<ProtectedRoute element={<Admin />} />} />
