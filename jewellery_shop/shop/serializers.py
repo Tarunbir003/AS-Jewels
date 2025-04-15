@@ -164,7 +164,7 @@ class JewelryCustomizationSerializer(serializers.ModelSerializer):
         model = JewelryCustomization
         fields = [
             'id', 'jewelry_type', 'material', 'size', 'engraving_text', 
-            'price', 'created_at', 'creator_name'
+            'price',  'status', 'created_at', 'creator_name'
         ]
         read_only_fields = ['created_at']
 
