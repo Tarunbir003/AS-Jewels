@@ -10,10 +10,9 @@ const Footer = () => {
           <h2 className="text-3xl font-bold text-[#E1B879]">AS Jewelers</h2>
           <p className="italic text-[#F4E3C3] mt-2">Elegance in Every Detail.</p>
           <div className="mt-5 flex space-x-4">
-            <a href="#" className="text-[#F4E3C3] hover:text-[#E1B879] transition"><FaFacebookF size={22} /></a>
-            <a href="#" className="text-[#F4E3C3] hover:text-[#E1B879] transition"><FaInstagram size={22} /></a>
-            <a href="#" className="text-[#F4E3C3] hover:text-[#E1B879] transition"><FaTwitter size={22} /></a>
-            <a href="#" className="text-[#F4E3C3] hover:text-[#E1B879] transition"><FaTiktok size={22} /></a>
+            <a href="https://www.facebook.com/AS.JEWELLERS2004" className="text-[#F4E3C3] hover:text-[#E1B879] transition"><FaFacebookF size={22} /></a>
+            <a href="https://www.instagram.com/AS.JEWELLERS2004" className="text-[#F4E3C3] hover:text-[#E1B879] transition"><FaInstagram size={22} /></a>
+            <a href="https://www.tiktok.com/@a.s.jewellers23?_t=ZM-8vXDKVvYTQc&_r=1" className="text-[#F4E3C3] hover:text-[#E1B879] transition"><FaTiktok size={22} /></a>
           </div>
         </div>
 
