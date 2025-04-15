@@ -25,6 +25,8 @@ from django.core.mail import send_mail
 from django.conf import settings
 from rest_framework.decorators import api_view
 from django.db.models import Q
+from rest_framework.permissions import IsAuthenticatedOrReadOnly  
+
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -52,8 +54,8 @@ class TagViewSet(viewsets.ModelViewSet):
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [IsAuthenticated]
-
+    permission_classes = [permissions.AllowAny]
+    authentication_classes = []  
 
 # Order List/Create View
 class OrderViewSet(viewsets.ViewSet):
