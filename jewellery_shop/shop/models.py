@@ -129,7 +129,7 @@ class UserInfo(models.Model):
 
 
 class JewelryCustomization(models.Model):
-     JEWELRY_TYPES = [
+    JEWELRY_TYPES = [
         ('ring', 'Ring'),
         ('necklace', 'Necklace'),
         ('bracelet', 'Bracelet'),
@@ -146,8 +146,10 @@ class JewelryCustomization(models.Model):
         ('platinum', 'Platinum'),
         ('diamond', 'Diamond'),
         ('gemstone', 'Gemstone'),
+        ('white_gold', 'White Gold'),
+        ('rose_gold', 'Rose Gold'),
+        ('copper', 'Copper'),
     ]
-    
     STATUS_CHOICES = [
         ('Pending', 'Pending'),
         ('In Progress', 'In Progress'),
