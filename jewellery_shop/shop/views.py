@@ -23,7 +23,7 @@ from .models import JewelryCustomization
 from .serializers import JewelryCustomizationSerializer
 from django.core.mail import send_mail
 from django.conf import settings
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticatedOrReadOnly  
 
