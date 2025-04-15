@@ -80,7 +80,7 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'user', 'total_price', 'name', 'phone_number', 
             'billing_address', 'shipping_address', 'coupon_applied', 
-            'payment_method', 'order_items', 'created_at'
+            'payment_method', 'status', 'order_items', 'created_at'
         ]
 
     def create(self, validated_data):
