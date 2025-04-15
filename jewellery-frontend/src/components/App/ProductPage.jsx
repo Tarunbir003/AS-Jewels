@@ -76,7 +76,7 @@ export default function ProductPage() {
         <div className="product-details">
           <h1 className="product-title">{product.name}</h1>
           <p className="product-description">{product.description}</p>
-          <p className="product-price">{product.price}</p>
+          <p className="product-price">₹{product.price}</p>
 
           {/* Metal Selection */}
           <div className="metal-options">
