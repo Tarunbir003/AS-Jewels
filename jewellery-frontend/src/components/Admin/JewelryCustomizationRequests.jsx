@@ -38,7 +38,7 @@ const JewelryCustomizationRequests = () => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      fetchCustomizationRequests(); // Refresh list after update
+      fetchCustomizationRequests();
     } catch (error) {
       console.error("Error updating status:", error);
     }
@@ -101,7 +101,7 @@ const JewelryCustomizationRequests = () => {
               <td className="border px-4 py-2">{request.material}</td>
               <td className="border px-4 py-2">{request.size}</td>
               <td className="border px-4 py-2">{request.engraving_text}</td>
-              <td className="border px-4 py-2">${request.price}</td>
+              <td className="border px-4 py-2">₹{request.price}</td>
               <td className="border px-4 py-2">{request.creator}</td>
               <td className="border px-4 py-2">
                 {new Date(request.created_at).toLocaleString()}
