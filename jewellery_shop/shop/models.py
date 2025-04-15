@@ -135,11 +135,12 @@ class JewelryCustomization(models.Model):
         ('gemstone', 'Gemstone'),
     ]
     
-     STATUS_CHOICES = [
-       ('Pending', 'Pending'),
-       ('In Progress', 'In Progress'),
-       ('Completed', 'Completed'),
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('In Progress', 'In Progress'),
+        ('Completed', 'Completed'),
     ]
+
 
 
     user = models.ForeignKey(User, on_delete=models.CASCADE)  # Foreign key to User model
