@@ -72,13 +72,22 @@ class Order(models.Model):
     billing_address = models.TextField()
     shipping_address = models.TextField()
     coupon_applied = models.CharField(max_length=100, null=True, blank=True)
-    
+
     PAYMENT_METHODS = [
         ('CARD', 'Credit/Debit Card'),
         ('PAYPAL', 'PayPal'),
         ('COD', 'Cash on Delivery'),
     ]
     payment_method = models.CharField(max_length=10, choices=PAYMENT_METHODS, default='CARD')
+
+    ORDER_STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Processing', 'Processing'),
+        ('Shipped', 'Shipped'),
+        ('Delivered', 'Delivered'),
+        ('Cancelled', 'Cancelled'),
+    ]
+    status = models.CharField(max_length=20, choices=ORDER_STATUS_CHOICES, default='Pending')
 
     def __str__(self):
         return f"Order {self.id} by {self.user.username}"
