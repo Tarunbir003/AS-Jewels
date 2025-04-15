@@ -129,11 +129,15 @@ class UserInfo(models.Model):
 
 
 class JewelryCustomization(models.Model):
-    JEWELRY_TYPES = [
+     JEWELRY_TYPES = [
         ('ring', 'Ring'),
         ('necklace', 'Necklace'),
         ('bracelet', 'Bracelet'),
         ('earrings', 'Earrings'),
+        ('anklet', 'Anklet'),
+        ('nosepin', 'Nose Pin'),
+        ('bangles', 'Bangles'),
+        ('toe_ring', 'Toe Ring'),
     ]
 
     MATERIALS = [
