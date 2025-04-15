@@ -53,7 +53,7 @@ const OrderDetails = () => {
       <p><strong>Billing Address:</strong> {order.billing_address}</p>
       <p><strong>Shipping Address:</strong> {order.shipping_address}</p>
       <p><strong>Payment Method:</strong> {order.payment_method}</p>
-      <p><strong>Total Price:</strong> ${order.total_price}</p>
+      <p><strong>Total Price:</strong> ₹{order.total_price}</p>
       <p><strong>Coupon Applied:</strong> {order.coupon_applied || "None"}</p>
       <p><strong>Created At:</strong> {new Date(order.created_at).toLocaleString()}</p>
       <p className="mb-2"><strong>Status:</strong> {order.status}</p>
