@@ -27,11 +27,13 @@ export default function Products() {
   const fetchProducts = async () => {
     try {
       let url = "https://as-jewels-1.onrender.com/api/products/";
-      const queryParams = new URLSearchParams();
+     const queryParams = new URLSearchParams();
 
-      if (selectedCategory) queryParams.append("category", selectedCategory);
-      if (selectedSubcategory) queryParams.append("subcategory", selectedSubcategory);
-      selectedTags.forEach((tag) => queryParams.append("tags", tag));
+   if (selectedCategory) queryParams.append("category", selectedCategory);
+   if (selectedSubcategory) queryParams.append("subcategory", selectedSubcategory);
+   if (selectedTags.length > 0) {
+  queryParams.append("tags", selectedTags.join(','));
+}
 
       if (queryParams.toString()) {
       url = `https://as-jewels-1.onrender.com/api/products/filter/?${queryParams.toString()}`;
