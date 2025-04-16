@@ -1,5 +1,6 @@
 from django.contrib import admin
 from .models import Product, Order, OrderItem, Cart, CartItem, UserInfo
+from .models import Category, SubCategory
 
 class UserInfoAdmin(admin.ModelAdmin):
     list_display = ('user', 'first_name', 'last_name', 'phone_number', 'shipping_address', 'is_admin')
@@ -61,8 +62,9 @@ class CartAdmin(admin.ModelAdmin):
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Cart, CartAdmin)
-admin.site.register(UserInfo, UserInfoAdmin)  # Register UserInfo model
-
+admin.site.register(UserInfo, UserInfoAdmin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(SubCategory, SubCategoryAdmin)
 
 
 from django.contrib import admin
@@ -90,5 +92,15 @@ class JewelryCustomizationAdmin(admin.ModelAdmin):
             'fields': ('user', 'created_at')
         }),
     )
+
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'description')
+    search_fields = ('name',)
+
+class SubCategoryAdmin(admin.ModelAdmin):
+    list_display = ('name', 'category', 'description')
+    list_filter = ('category',)
+    search_fields = ('name', 'category__name')
+
 
 admin.site.register(JewelryCustomization, JewelryCustomizationAdmin)
