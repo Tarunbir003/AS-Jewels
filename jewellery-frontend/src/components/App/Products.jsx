@@ -34,8 +34,8 @@ export default function Products() {
       selectedTags.forEach((tag) => queryParams.append("tags", tag));
 
       if (queryParams.toString()) {
-        url = `https://as-jewels-1.onrender.com/products/filter/?${queryParams.toString()}`;
-      }
+      url = `https://as-jewels-1.onrender.com/api/products/filter/?${queryParams.toString()}`;
+    }
 
       const response = await axios.get(url, {
         headers: {
