@@ -78,22 +78,6 @@ export default function ProductPage() {
           <p className="product-description">{product.description}</p>
           <p className="product-price">₹{product.price}</p>
 
-          {/* Metal Selection */}
-          <div className="metal-options">
-            <button
-              className={`metal-btn ${selectedMetal === "silver" ? "active" : ""}`}
-              onClick={() => setSelectedMetal("silver")}
-            >
-              Silver
-            </button>
-            <button
-              className={`metal-btn ${selectedMetal === "gold" ? "active" : ""}`}
-              onClick={() => setSelectedMetal("gold")}
-            >
-              Gold
-            </button>
-          </div>
-
           {/* Size Selection */}
           <select
             className="select-size"
