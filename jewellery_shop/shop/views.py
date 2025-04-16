@@ -452,27 +452,27 @@ class ProductFilterView(APIView):
         # Extract query parameters
         category_id = request.query_params.get('category', None)
         subcategory_id = request.query_params.get('subcategory', None)
-        tag_ids = request.query_params.getlist('tags', None)  # Can accept multiple tag IDs
+        
+        # Handle comma-separated tag IDs
+        tags_param = request.query_params.get('tags')
+        tag_ids = tags_param.split(',') if tags_param else []
 
-        # Create a query object to filter products
+        # Build the query dynamically
         query = Q()
-
         if category_id:
-            query &= Q(category=category_id)  # Match category field in the JSON
+            query &= Q(category_id=category_id)
 
         if subcategory_id:
-            query &= Q(sub_category=subcategory_id)  # Match sub_category field in the JSON
+            query &= Q(sub_category_id=subcategory_id)
 
         if tag_ids:
-            query &= Q(tags__in=tag_ids)  # Match tags field in the JSON
+            query &= Q(tags__in=tag_ids)
 
         # Fetch filtered products
         products = Product.objects.filter(query).distinct()
-
-        # Serialize the products
         serializer = ProductSerializer(products, many=True)
-
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 @api_view(['PATCH'])
 @permission_classes([IsAuthenticated])
