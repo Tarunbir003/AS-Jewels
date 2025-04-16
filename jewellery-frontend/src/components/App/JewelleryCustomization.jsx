@@ -20,15 +20,15 @@ const JewelryCustomizationForm = () => {
 
   const basePrices = {
     jewelry_type: {
-      ring: 100,
-      necklace: 200,
-      bracelet: 150,
-      earrings: 120,
+      ring: 6000,
+      necklace: 12000,
+      bracelet: 9000,
+      earrings: 7200,
     },
     material: {
-      gold: 300,
-      silver: 100,
-      platinum: 500,
+      gold: 75000,
+      silver: 7000,
+      platinum: 100000,
     },
   };
 
