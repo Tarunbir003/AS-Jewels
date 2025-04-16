@@ -120,7 +120,6 @@ export default function ProductPage() {
           {/* Additional Benefits */}
           <ul className="benefits">
             <li>Free 30-day returns</li>
-            <li>Free shipping on orders $99+</li>
             <li>Gift packaging available</li>
             <li>Complimentary 1-year warranty</li>
           </ul>
