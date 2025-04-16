@@ -5,7 +5,7 @@ import Header from "./Header";
 import Cart from "./Cart";
 import Toast from "./Toast";
 import Select from "react-select";
-import "./Products.css"; // Import updated styles
+import "./Products.css";
 
 export default function Products() {
   const [products, setProducts] = useState([]);
