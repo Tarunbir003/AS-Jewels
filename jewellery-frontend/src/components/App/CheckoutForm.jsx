@@ -10,6 +10,7 @@ const CheckoutForm = () => {
   const [addresses, setAddresses] = useState([]);
   const [selectedBillingAddress, setSelectedBillingAddress] = useState('');
   const [selectedShippingAddress, setSelectedShippingAddress] = useState('');
+  const [isSameAddress, setIsSameAddress] = useState(false);
   const [subTotal, setSubTotal] = useState(0);
   const [couponCode, setCouponCode] = useState('');
   const [discount, setDiscount] = useState(0);
@@ -39,6 +40,22 @@ const CheckoutForm = () => {
     const validSubTotal = typeof subTotal === 'number' ? subTotal : 0;
     const discountedPrice = validSubTotal - (validSubTotal * (discount / 100));
     return Math.max(discountedPrice, 0);
+  };
+
+  const handleBillingAddressChange = (e) => {
+    const selectedAddress = e.target.value;
+    setSelectedBillingAddress(selectedAddress);
+    if (isSameAddress) {
+      setSelectedShippingAddress(selectedAddress);
+    }
+  };
+
+  const handleSameAddressToggle = (e) => {
+    const checked = e.target.checked;
+    setIsSameAddress(checked);
+    if (checked) {
+      setSelectedShippingAddress(selectedBillingAddress);
+    }
   };
 
   const handleRazorpayPayment = async () => {
@@ -146,7 +163,7 @@ const CheckoutForm = () => {
           <h2 className="text-lg font-medium mt-4">Select Billing Address</h2>
           <select
             value={selectedBillingAddress}
-            onChange={(e) => setSelectedBillingAddress(e.target.value)}
+            onChange={handleBillingAddressChange}
             className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
             required
           >
@@ -157,20 +174,37 @@ const CheckoutForm = () => {
               </option>
             ))}
           </select>
-          <h2 className="text-lg font-medium mt-4">Select Shipping Address</h2>
-          <select
-            value={selectedShippingAddress}
-            onChange={(e) => setSelectedShippingAddress(e.target.value)}
-            className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
-            required
-          >
-            <option value="">Select Shipping Address</option>
-            {addresses.map((address) => (
-              <option key={address.id} value={address.id}>
-                {address.street}, {address.city}, {address.state}, {address.postal_code}, {address.country}
-              </option>
-            ))}
-          </select>
+
+          <div className="mt-2">
+            <label className="inline-flex items-center">
+              <input
+                type="checkbox"
+                checked={isSameAddress}
+                onChange={handleSameAddressToggle}
+                className="form-checkbox"
+              />
+              <span className="ml-2 text-sm text-gray-700">Billing and Shipping Address are the same</span>
+            </label>
+          </div>
+
+          {!isSameAddress && (
+            <>
+              <h2 className="text-lg font-medium mt-4">Select Shipping Address</h2>
+              <select
+                value={selectedShippingAddress}
+                onChange={(e) => setSelectedShippingAddress(e.target.value)}
+                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+                required
+              >
+                <option value="">Select Shipping Address</option>
+                {addresses.map((address) => (
+                  <option key={address.id} value={address.id}>
+                    {address.street}, {address.city}, {address.state}, {address.postal_code}, {address.country}
+                  </option>
+                ))}
+              </select>
+            </>
+          )}
         </form>
 
         <div className="mt-4">
