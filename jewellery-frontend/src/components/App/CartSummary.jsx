@@ -80,7 +80,7 @@ const CartSummary = ({ couponCode, setCouponCode, discount, setDiscount, subtota
                     />
                   <div>
                     <p>{item.product.name} x {item.quantity}</p>
-                    <p>{(parseFloat(item.product.price) * item.quantity).toFixed(2)}</p>
+                    <p>₹{(parseFloat(item.product.price) * item.quantity).toFixed(2)}</p>
                   </div>
                 </li>
               ))}
