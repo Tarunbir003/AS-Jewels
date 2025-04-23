@@ -60,7 +60,6 @@ const CheckoutForm = () => {
 
   const handleRazorpayPayment = async () => {
     try {
-      // Step 1: Create an order directly on the client side
       const orderData = {
         amount: calculateTotalCost() * 100, // Amount in paise
         currency: 'INR',
@@ -110,7 +109,7 @@ const CheckoutForm = () => {
       coupon_applied: couponCode,
       order_items: orderItems,
       payment_method: 'RAZORPAY',
-      payment_id: paymentId, // Include the Razorpay payment ID
+      payment_id: paymentId,
     };
 
     try {
