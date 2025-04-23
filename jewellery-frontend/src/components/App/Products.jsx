@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import Cart from "./Cart";
 import Toast from "./Toast";
 import Select from "react-select";
-import Header from "./Header";
 import "./Products.css"; // Import updated styles
 
 export default function Products() {
@@ -110,7 +109,7 @@ export default function Products() {
 
   return (
     <div className="container">
-      <Header />
+
       {/* Filter Section */}
       <div className="filter-bar">
         <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
