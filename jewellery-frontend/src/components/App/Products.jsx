@@ -23,50 +23,39 @@ export default function Products() {
   const [refreshCart, setRefreshCart] = useState(false);
   const token = localStorage.getItem("accessToken");
 
-  // Fetch products
   const fetchProducts = async () => {
     try {
       let url = "https://as-jewels-1.onrender.com/api/products/";
-     const queryParams = new URLSearchParams();
+      const queryParams = new URLSearchParams();
 
-   if (selectedCategory) queryParams.append("category", selectedCategory);
-   if (selectedSubcategory) queryParams.append("subcategory", selectedSubcategory);
-   if (selectedTags.length > 0) {
-  queryParams.append("tags", selectedTags.join(','));
-}
+      if (selectedCategory) queryParams.append("category", selectedCategory);
+      if (selectedSubcategory) queryParams.append("subcategory", selectedSubcategory);
+      if (selectedTags.length > 0) {
+        queryParams.append("tags", selectedTags.join(","));
+      }
 
       if (queryParams.toString()) {
-      url = `https://as-jewels-1.onrender.com/api/products/filter/?${queryParams.toString()}`;
-    }
+        url = `https://as-jewels-1.onrender.com/api/products/filter/?${queryParams}`;
+      }
 
-      const response = await axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const baseURL = "https://as-jewels-1.onrender.com";
-      const productsWithFullImages = response.data.map((product) => ({
-        ...product,
-        image: product.image.startsWith("http") ? product.image : `${baseURL}${product.image}`,
-      }));
-
-      setProducts(productsWithFullImages);
+      const response = await axios.get(url);
+      setProducts(response.data);
     } catch (error) {
       console.error("Error fetching products:", error);
     }
   };
 
-  // Fetch Filters
   const fetchFilters = async () => {
     try {
-      const categoryResponse = await axios.get("https://as-jewels-1.onrender.com/api/categories/");
-      const subcategoryResponse = await axios.get("https://as-jewels-1.onrender.com/api/subcategories/");
-      const tagsResponse = await axios.get("https://as-jewels-1.onrender.com/api/tags/");
+      const [catRes, subcatRes, tagRes] = await Promise.all([
+        axios.get("https://as-jewels-1.onrender.com/api/categories/"),
+        axios.get("https://as-jewels-1.onrender.com/api/subcategories/"),
+        axios.get("https://as-jewels-1.onrender.com/api/tags/"),
+      ]);
 
-      setCategories(categoryResponse.data);
-      setSubcategories(subcategoryResponse.data);
-      setTags(tagsResponse.data);
+      setCategories(catRes.data);
+      setSubcategories(subcatRes.data);
+      setTags(tagRes.data);
     } catch (error) {
       console.error("Error fetching filters:", error);
     }
@@ -74,103 +63,65 @@ export default function Products() {
 
   useEffect(() => {
     fetchFilters();
-    fetchProducts();
   }, []);
 
   useEffect(() => {
     fetchProducts();
   }, [selectedCategory, selectedSubcategory, selectedTags]);
 
-  // Add to Cart Function
-  const addToCart = async (productId) => {
-    try {
-      const response = await axios.post(
-        "https://as-jewels-1.onrender.com/api/cart/",
-        { product_id: productId, quantity: 1 },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
-      );
-      if (response.status === 201) {
-        setCartOpen(true);
-        setRefreshCart(true);
-        setToastMessage("Product added to cart!");
-        setShowToast(true);
-
-        setTimeout(() => {
-          setShowToast(false);
-          setRefreshCart(false);
-        }, 3000);
-      }
-    } catch (error) {
-      console.error("Error adding product to cart:", error);
-    }
-  };
-
   return (
-    <div className="container">
-      {/* Filter Section */}
-      <div className="filter-bar">
-        <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+    <>
+      <Header />
+      {cartOpen && (
+        <Cart
+          setCartOpen={setCartOpen}
+          refreshCart={refreshCart}
+          setRefreshCart={setRefreshCart}
+        />
+      )}
+      <div className="filters">
+        <select onChange={(e) => setSelectedCategory(e.target.value)}>
           <option value="">All Categories</option>
-          {categories.map((category) => (
-            <option key={category.id} value={category.id}>
-              {category.name}
-            </option>
+          {categories.map((cat) => (
+            <option key={cat.id} value={cat.id}>{cat.name}</option>
           ))}
         </select>
 
-        <select value={selectedSubcategory} onChange={(e) => setSelectedSubcategory(e.target.value)}>
+        <select onChange={(e) => setSelectedSubcategory(e.target.value)}>
           <option value="">All Subcategories</option>
-          {subcategories.map((subcategory) => (
-            <option key={subcategory.id} value={subcategory.id}>
-              {subcategory.name}
-            </option>
+          {subcategories.map((sub) => (
+            <option key={sub.id} value={sub.id}>{sub.name}</option>
           ))}
         </select>
 
         <Select
           isMulti
-          options={tags.map((tag) => ({
-            value: tag.id,
-            label: tag.name,
-          }))}
-          value={tags.filter((tag) => selectedTags.includes(tag.id)).map((tag) => ({
-            value: tag.id,
-            label: tag.name,
-          }))}
-          onChange={(selectedOptions) => {
-            setSelectedTags(selectedOptions ? selectedOptions.map((option) => option.value) : []);
-          }}
-          className="w-full max-w-md"
+          options={tags.map(tag => ({ value: tag.id, label: tag.name }))}
+          className="tags-select"
+          onChange={(selected) =>
+            setSelectedTags(selected.map(tag => tag.value))
+          }
           placeholder="Select Tags"
-          closeMenuOnSelect={false}
         />
       </div>
 
-      {/* Product Grid */}
-      <div className="product-grid">
+      <div className="products-container">
         {products.map((product) => (
           <div className="product-card" key={product.id}>
-            <img className="product-image" src={product.image} alt={product.name} />
+            <img src={product.image} alt={product.name} className="product-image" />
             <div className="product-info">
-              <h3>{product.name}</h3>
-              <p>{product.description}</p>
-              <p className="price">₹{product.price}</p>
-              <div className="button-group">
-                <button className="button add-to-cart-btn" onClick={() => addToCart(product.id)}>Add to Cart</button>
-                <Link to={`/product/${product.id}`} className="button view-details-btn">View Details</Link>
-              </div>
+              <h3 className="product-name">{product.name}</h3>
+              <p className="product-description">{product.description}</p>
+              <p className="product-price">₹{product.price}</p>
             </div>
+            <button className="add-to-cart">ADD TO CART</button>
+            <Link to={`/product/${product.id}`}>
+              <button className="view-details">VIEW DETAILS</button>
+            </Link>
           </div>
         ))}
       </div>
-
-      <Toast show={showToast} message={toastMessage} />
-      <Cart open={cartOpen} setOpen={setCartOpen} refreshCart={refreshCart} />
-    </div>
+      {showToast && <Toast message={toastMessage} />}
+    </>
   );
 }
