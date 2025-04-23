@@ -206,7 +206,7 @@ export default function Cart({ open, setOpen , refreshCart}) {
                   <div className="flex justify-between text-base font-medium text-gray-900">
                     <p>Subtotal</p>
                     <p>
-                      $
+                      ₹
                       {cartItems
                         .reduce((acc, item) => acc + parseFloat(item.product.price) * item.quantity, 0)
                         .toFixed(2)}
