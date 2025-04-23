@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import Cart from "./Cart";
 import Toast from "./Toast";
 import Select from "react-select";
+import Header from "./Header";
 import "./Products.css"; // Import updated styles
 
 export default function Products() {
